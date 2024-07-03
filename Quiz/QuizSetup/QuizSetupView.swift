@@ -33,13 +33,14 @@ struct QuizSetupView: View {
                Spacer()
                 
                 Text("Quiz Setup")
-                    .font(.title)
+                    .font(.title2)
                     .fontWeight(.bold)
                 
                 Spacer()
             }
             .padding(.horizontal)
             .padding(.vertical, 20)
+            .background(Color.headerColor)
             
             NavigationView {
                 Form {
