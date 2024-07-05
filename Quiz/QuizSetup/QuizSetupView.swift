@@ -120,6 +120,7 @@ struct QuizSetupView: View {
         fetchQuiz(from: urlCall)
     }
     
+    // relocate to viewModel later
     private func fetchQuiz(from urlString: String) {
         guard let url = URL(string: urlString) else {
             alertMessage = "Invalid URL."
@@ -144,32 +145,33 @@ struct QuizSetupView: View {
                 return
             }
             
-            // Print the raw data received from the API
-            if let jsonString = String(data: data, encoding: .utf8) {
-                print("Raw JSON response: \(jsonString)")
+            // Decode the JSON response
+            do {
+                let decodedResponse = try JSONDecoder().decode(QuizResponse.self, from: data)
+                let questions = decodedResponse.results.map { result in
+                    QuestionModel(
+                        question: result.question,
+                        correctAnswer: result.correct_answer,
+                        incorrectAnswers: result.incorrect_answers,
+                        allAnswers: Set([result.correct_answer] + result.incorrect_answers)
+                    )
+                }
+                
+                // Use the questions array
+                print(questions)
+                
+            } catch {
+                DispatchQueue.main.async {
+                    alertMessage = "Failed to decode JSON: \(error.localizedDescription)"
+                    showingAlert = true
+                }
             }
             
-            // Optionally, you can decode the response here if you need to use it later
-            /*
-             do {
-             let quizResponse = try JSONDecoder().decode(QuizResponse.self, from: data)
-             DispatchQueue.main.async {
-             self.questions = quizResponse.results
-             alertMessage = "Quiz created successfully with \(questions.count) questions."
-             showingAlert = true
-             }
-             } catch {
-             DispatchQueue.main.async {
-             alertMessage = "Error decoding data: \(error.localizedDescription)"
-             showingAlert = true
-             }
-             }
-             */
         }.resume()
     }
 }
 
-struct QuizSetupView_Previews: PreviewProvider {
+struct SetupView_Previews: PreviewProvider {
     static var previews: some View {
         QuizSetupView()
     }
