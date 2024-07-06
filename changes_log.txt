@@ -8,4 +8,4 @@ BR3 - DashQuestionView
 	Napravljen DashQuestionView za “potjeru” kviz
 
 BR4 - DashMode
-	Napravljeno automatsko prebacijvanje pitanja u Dash Modu
+	Napravljeno automatsko prebacijvanje pitanja u Dash Modu i dodan score koji se sam azurira
