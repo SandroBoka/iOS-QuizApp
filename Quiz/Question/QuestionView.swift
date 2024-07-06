@@ -99,18 +99,6 @@ struct QuestionView: View {
     }
 }
 
-private var header: some View{
-    HStack {
-        let currentQuestionIndex = 0
-        Text("Question \(currentQuestionIndex + 1) of 10")
-            .font(.title3)
-            .fontWeight(.bold)
-            .foregroundColor(.black)
-            .frame(maxWidth: .infinity, minHeight: 70)
-    }
-}
-
-
 struct QuestionView_Previews: PreviewProvider {
     static var previews: some View {
         
