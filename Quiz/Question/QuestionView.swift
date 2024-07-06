@@ -28,6 +28,11 @@ struct QuestionView: View {
                 .font(.title)
                 .padding()
             
+            Divider()
+                .frame(height: 3)
+                .background(Color.gray)
+                .padding()
+            
             ForEach(Array(questions[currentQuestionIndex].allAnswers), id: \.self) { answer in
                 Button(action: {
                     selectAnswer(answer)
