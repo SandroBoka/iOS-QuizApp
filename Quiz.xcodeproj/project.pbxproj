@@ -108,6 +108,7 @@
 		AA3358DD2C32A81B004C109F /* Quiz */ = {
 			isa = PBXGroup;
 			children = (
+				AA77C03A2C39B23D00C631AF /* DashQuestion */,
 				AAE45E422C3572150094A4F6 /* QuizSetup */,
 				AAD839FC2C354D7E00CCC55D /* Question */,
 				AA33590D2C32A97B004C109F /* HomeScreen */,
@@ -152,6 +153,13 @@
 				AA33590E2C32A99E004C109F /* HomeScreenView.swift */,
 			);
 			path = HomeScreen;
+			sourceTree = "<group>";
+		};
+		AA77C03A2C39B23D00C631AF /* DashQuestion */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DashQuestion;
 			sourceTree = "<group>";
 		};
 		AAD839FC2C354D7E00CCC55D /* Question */ = {
