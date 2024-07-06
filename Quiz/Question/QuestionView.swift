@@ -1,31 +1,21 @@
-//
-//  DashQuestionView.swift
-//  Quiz
-//
-//  Created by Sandro Boka on 06.07.2024..
-//
-
 import SwiftUI
 import Foundation
 
-struct DashQuestionView: View {
+struct QuestionView: View {
     let questions: [QuestionModel]
     
     @State private var currentQuestionIndex = 0
     @State private var selectedAnswer: String?
     @State private var showNextButton = false
     
-    @State private var timeRemaining = 120 // 2 minutes in seconds
-    @State private var timer: Timer? = nil
-    @State private var quizEnded = false
-    
     var body: some View {
         VStack(spacing: 20) {
             
             HStack {
-                Text("Time remaining: \(timeString(from: timeRemaining))")
+                Text("Question \(currentQuestionIndex + 1) of \(questions.count)")
                     .font(.title3)
                     .fontWeight(.bold)
+                    .foregroundColor(.black)
                     .frame(maxWidth: .infinity, minHeight: 70)
             }
             .background {
@@ -34,62 +24,50 @@ struct DashQuestionView: View {
             }
             
             // Question text and answer buttons
-            if !quizEnded {
-                Text(questions[currentQuestionIndex].question)
-                    .font(.title)
-                    .padding()
-                
-                Divider()
-                    .frame(height: 3)
-                    .background(Color.gray)
-                    .padding()
-                
-                ForEach(Array(questions[currentQuestionIndex].allAnswers), id: \.self) { answer in
-                    Button(action: {
-                        selectAnswer(answer)
-                        print("Selected answer: \(answer)")
-                    }) {
-                        Text(answer)
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity, minHeight: 50)
-                            .background(buttonColor(for: answer))
-                            .cornerRadius(10)
-                            .padding(.horizontal)
-                    }
-                    .disabled(selectedAnswer != nil) // Disable buttons after selection
-                    .opacity(selectedAnswer != nil && answer != selectedAnswer ? 0.5 : 1.0) // Dim other answers when one is selected
+            Text(questions[currentQuestionIndex].question)
+                .font(.title)
+                .padding()
+            
+            Divider()
+                .frame(height: 3)
+                .background(Color.gray)
+                .padding()
+            
+            ForEach(Array(questions[currentQuestionIndex].allAnswers), id: \.self) { answer in
+                Button(action: {
+                    selectAnswer(answer)
+                    print("Selected answer: \(answer)")
+                }) {
+                    Text(answer)
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity, minHeight: 50)
+                        .background(buttonColor(for: answer))
+                        .cornerRadius(10)
+                        .padding(.horizontal)
                 }
-                
-                Spacer()
-                
-                // Next question button
-                if showNextButton {
-                    Button(action: nextQuestion) {
-                        Text("Next Question")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity, minHeight: 50)
-                            .background(Color.orange.opacity(0.7))
-                            .cornerRadius(10)
-                            .padding(.horizontal)
-                    }
-                    .padding(.bottom)
+                .disabled(selectedAnswer != nil) // Disable buttons after selection
+                .opacity(selectedAnswer != nil && answer != selectedAnswer ? 0.5 : 1.0) // Dim other answers when one is selected
+            }
+            
+            Spacer()
+            
+            // Next question button
+            if showNextButton {
+                Button(action: nextQuestion) {
+                    Text("Next Question")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity, minHeight: 50)
+                        .background(Color.orange.opacity(0.7))
+                        .cornerRadius(10)
+                        .padding(.horizontal)
                 }
-            } else {
-                Text("Quiz Ended")
-                    .font(.title)
-                    .padding()
+                .padding(.bottom)
             }
         }
         .navigationTitle("Quiz")
         .background(Color.gray.opacity(0.2))
-        .onAppear {
-            startTimer()
-        }
-        .onDisappear {
-            timer?.invalidate()
-        }
     }
     
     private func selectAnswer(_ answer: String) {
@@ -119,26 +97,9 @@ struct DashQuestionView: View {
             return Color.gray
         }
     }
-    
-    private func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            if self.timeRemaining > 0 {
-                self.timeRemaining -= 1
-            } else {
-                self.timer?.invalidate()
-                self.quizEnded = true
-            }
-        }
-    }
-    
-    private func timeString(from seconds: Int) -> String {
-        let minutes = seconds / 60
-        let seconds = seconds % 60
-        return String(format: "%02d:%02d", minutes, seconds)
-    }
 }
 
-struct DashQuestionView_Previews: PreviewProvider {
+struct QuestionView_Previews: PreviewProvider {
     static var previews: some View {
         
         let questions: [Quiz.QuestionModel] = [
@@ -204,6 +165,6 @@ struct DashQuestionView_Previews: PreviewProvider {
             )
         ]
         
-        DashQuestionView(questions: questions)
+        QuestionView(questions: questions)
     }
 }
