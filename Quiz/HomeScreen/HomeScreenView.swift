@@ -35,7 +35,7 @@ struct HomescreenView: View{
             }
             .padding(.vertical, 15)
             
-            CustomButton(text: "Dash Mod") {
+            CustomButton(text: "Dash Mode") {
                 print("Dash Mod pressed.")
             }
             .padding(.bottom, 20)
