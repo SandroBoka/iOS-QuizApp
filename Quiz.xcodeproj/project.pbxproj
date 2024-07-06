@@ -21,6 +21,7 @@
 		AAD839FE2C354DA800CCC55D /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD839FD2C354DA800CCC55D /* QuestionView.swift */; };
 		AAE45E442C3572410094A4F6 /* QuizSetupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE45E432C3572410094A4F6 /* QuizSetupModel.swift */; };
 		AAE45E462C3572B50094A4F6 /* QuizSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE45E452C3572B50094A4F6 /* QuizSetupView.swift */; };
+		AAF45B452C39B559002762DC /* DashQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF45B442C39B559002762DC /* DashQuestionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 		AAD839FD2C354DA800CCC55D /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
 		AAE45E432C3572410094A4F6 /* QuizSetupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizSetupModel.swift; sourceTree = "<group>"; };
 		AAE45E452C3572B50094A4F6 /* QuizSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizSetupView.swift; sourceTree = "<group>"; };
+		AAF45B442C39B559002762DC /* DashQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashQuestionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +160,7 @@
 		AA77C03A2C39B23D00C631AF /* DashQuestion */ = {
 			isa = PBXGroup;
 			children = (
+				AAF45B442C39B559002762DC /* DashQuestionView.swift */,
 			);
 			path = DashQuestion;
 			sourceTree = "<group>";
@@ -311,6 +314,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA3358E82C32A81C004C109F /* Persistence.swift in Sources */,
+				AAF45B452C39B559002762DC /* DashQuestionView.swift in Sources */,
 				AA3358E12C32A81B004C109F /* ContentView.swift in Sources */,
 				AA3358EB2C32A81C004C109F /* Quiz.xcdatamodeld in Sources */,
 				AAE45E462C3572B50094A4F6 /* QuizSetupView.swift in Sources */,

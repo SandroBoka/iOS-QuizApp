@@ -13,7 +13,7 @@ struct DashQuestionView: View {
     
     @State private var currentQuestionIndex = 0
     @State private var selectedAnswer: String?
-    @State private var showNextButton = false
+    @State private var score = 0
     
     @State private var timeRemaining = 120 // 2 minutes in seconds
     @State private var timer: Timer? = nil
@@ -47,7 +47,6 @@ struct DashQuestionView: View {
                 ForEach(Array(questions[currentQuestionIndex].allAnswers), id: \.self) { answer in
                     Button(action: {
                         selectAnswer(answer)
-                        print("Selected answer: \(answer)")
                     }) {
                         Text(answer)
                             .font(.headline)
@@ -61,21 +60,12 @@ struct DashQuestionView: View {
                     .opacity(selectedAnswer != nil && answer != selectedAnswer ? 0.5 : 1.0) // Dim other answers when one is selected
                 }
                 
-                Spacer()
+                Text("Score: \(score)")
+                    .font(.title3)
+                    .fontWeight(.bold)
+                    .padding(.vertical, 15)
                 
-                // Next question button
-                if showNextButton {
-                    Button(action: nextQuestion) {
-                        Text("Next Question")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity, minHeight: 50)
-                            .background(Color.orange.opacity(0.7))
-                            .cornerRadius(10)
-                            .padding(.horizontal)
-                    }
-                    .padding(.bottom)
-                }
+                Spacer()
             } else {
                 Text("Quiz Ended")
                     .font(.title)
@@ -94,19 +84,26 @@ struct DashQuestionView: View {
     
     private func selectAnswer(_ answer: String) {
         selectedAnswer = answer
-        showNextButton = true
+        if selectedAnswer == questions[currentQuestionIndex].correctAnswer {
+            self.score += 1
+        }
+        nextQuestion()
     }
     
     private func nextQuestion() {
-        currentQuestionIndex += 1
-        selectedAnswer = nil
-        showNextButton = false
-        
-        if currentQuestionIndex >= questions.count {
-            // Quiz completed logic can go here
-            print("Quiz completed!")
-            currentQuestionIndex = 0 // Reset the quiz
+        // wait 1 second ant then call nextQuestion
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            currentQuestionIndex += 1
+            selectedAnswer = nil
+            
+            if currentQuestionIndex >= questions.count {
+                // Quiz completed logic can go here
+                print("Quiz completed!")
+                self.quizEnded = true
+                currentQuestionIndex = 0 // Reset the quiz
+            }
         }
+        
     }
     
     private func buttonColor(for answer: String) -> Color {
