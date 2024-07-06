@@ -1,0 +1,11 @@
+BR1 - QuestionView
+	Napravljen QuestionView za obican kviz
+
+BR2 - QuestionModel
+	Napravljen QuestionModel koji se koristi za pohranu pitanja dobivenih 	od API-a
+
+BR3 - DashQuestionView
+	Napravljen DashQuestionView za “potjeru” kviz
+
+BR4 - DashMode
+	Napravljeno automatsko prebacijvanje pitanja u Dash Modu
