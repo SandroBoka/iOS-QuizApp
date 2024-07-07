@@ -12,3 +12,5 @@ BR4 - DashMode
 
 BR5 - DashEndView
 	Napravljen DashEndView i DashEndModel koji ce se prikazati pri zavrsetku Dash Quiz-a
+
+BR7 - StatsView
