@@ -67,9 +67,11 @@ struct DashQuestionView: View {
                 
                 Spacer()
             } else {
+                Spacer()
                 Text("Quiz Ended")
                     .font(.title)
                     .padding()
+                Spacer()
             }
         }
         .navigationTitle("Quiz")
@@ -100,7 +102,7 @@ struct DashQuestionView: View {
                 // Quiz completed logic can go here
                 print("Quiz completed!")
                 self.quizEnded = true
-                currentQuestionIndex = 0 // Reset the quiz
+                self.timer?.invalidate()
             }
         }
         
