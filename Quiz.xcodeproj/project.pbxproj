@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA161D352C3AC42E00C2FB28 /* EndModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA161D342C3AC42E00C2FB28 /* EndModel.swift */; };
+		AA161D372C3AC4A400C2FB28 /* EndView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA161D362C3AC4A400C2FB28 /* EndView.swift */; };
 		AA3358DF2C32A81B004C109F /* QuizApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3358DE2C32A81B004C109F /* QuizApp.swift */; };
 		AA3358E12C32A81B004C109F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3358E02C32A81B004C109F /* ContentView.swift */; };
 		AA3358E32C32A81C004C109F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA3358E22C32A81C004C109F /* Assets.xcassets */; };
@@ -44,6 +46,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AA161D342C3AC42E00C2FB28 /* EndModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndModel.swift; sourceTree = "<group>"; };
+		AA161D362C3AC4A400C2FB28 /* EndView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndView.swift; sourceTree = "<group>"; };
 		AA3358DB2C32A81B004C109F /* Quiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quiz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA3358DE2C32A81B004C109F /* QuizApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizApp.swift; sourceTree = "<group>"; };
 		AA3358E02C32A81B004C109F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -175,6 +179,8 @@
 			isa = PBXGroup;
 			children = (
 				AAD839FD2C354DA800CCC55D /* QuestionView.swift */,
+				AA161D342C3AC42E00C2FB28 /* EndModel.swift */,
+				AA161D362C3AC4A400C2FB28 /* EndView.swift */,
 			);
 			path = Question;
 			sourceTree = "<group>";
@@ -325,11 +331,13 @@
 				AA3358EB2C32A81C004C109F /* Quiz.xcdatamodeld in Sources */,
 				AAE45E462C3572B50094A4F6 /* QuizSetupView.swift in Sources */,
 				AADAD1732C3A9999007F1E9A /* DashEndModel.swift in Sources */,
+				AA161D352C3AC42E00C2FB28 /* EndModel.swift in Sources */,
 				AA33590F2C32A99E004C109F /* HomeScreenView.swift in Sources */,
 				AAE45E442C3572410094A4F6 /* QuizSetupModel.swift in Sources */,
 				AAAFD0A72C38654F0030CB7B /* QuestionModel.swift in Sources */,
 				AADAD1712C3A996A007F1E9A /* DashEndView.swift in Sources */,
 				AAD839FE2C354DA800CCC55D /* QuestionView.swift in Sources */,
+				AA161D372C3AC4A400C2FB28 /* EndView.swift in Sources */,
 				AA3358DF2C32A81B004C109F /* QuizApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
