@@ -9,3 +9,6 @@ BR3 - DashQuestionView
 
 BR4 - DashMode
 	Napravljeno automatsko prebacijvanje pitanja u Dash Modu i dodan score koji se sam azurira
+
+BR5 - DashEndView
+	Napravljen DashEndView i DashEndModel koji ce se prikazati pri zavrsetku Dash Quiz-a
