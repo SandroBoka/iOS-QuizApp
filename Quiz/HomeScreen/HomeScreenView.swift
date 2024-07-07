@@ -47,7 +47,7 @@ struct HomescreenView: View{
                 .padding(.bottom, 15)
             
             VStack {
-                Text("Percentage Correct: \(percentageCorrect, specifier: "%.1f")%")
+                Text("Percentage of Correct Answers: \(percentageCorrect, specifier: "%.1f")%")
                     .font(.headline)
                 Text("Best Score in Dash: \(bestDash)")
                     .font(.headline)
@@ -90,7 +90,8 @@ struct CustomButton: View {
     var body: some View {
         Button(action: action) {
             Text(text)
-                .font(.headline)
+                .font(.title3)
+                .fontWeight(.bold)
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, minHeight: 100)
                 .background(Color.buttonsColor)
