@@ -4,6 +4,8 @@ import Foundation
 struct QuestionView: View {
     let questions: [QuestionModel]
     
+    @EnvironmentObject var router: Router
+    
     @State private var currentQuestionIndex = 0
     @State private var selectedAnswer: String?
     @State private var showNextButton = false
@@ -12,12 +14,25 @@ struct QuestionView: View {
         VStack(spacing: 20) {
             
             HStack {
+                Button {
+                    router.navigateTo(.home, questions: [])
+                } label: {
+                    Image(systemName: "chevron.backward")
+                        .renderingMode(.template)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 24, height: 24)
+                        .foregroundStyle(Color.black)
+                }
                 Text("Question \(currentQuestionIndex + 1) of \(questions.count)")
                     .font(.title3)
                     .fontWeight(.bold)
                     .foregroundColor(.black)
                     .frame(maxWidth: .infinity, minHeight: 70)
+                
+                Spacer()
             }
+            .padding(.leading, 10)
             .background {
                 Color.headerColor
                     .ignoresSafeArea()

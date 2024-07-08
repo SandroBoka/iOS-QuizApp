@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct QuizSetupView: View {
     @EnvironmentObject var router: Router
@@ -23,7 +24,7 @@ struct QuizSetupView: View {
             HStack {
                 Button {
                     print("Back button pressed")
-                    router.navigateTo(.home)
+                    router.navigateTo(.home, questions: [])
                 } label: {
                     Image(systemName: "chevron.backward")
                         .renderingMode(.template)
@@ -33,7 +34,7 @@ struct QuizSetupView: View {
                         .foregroundStyle(Color.black)
                 }
                 
-               Spacer()
+                Spacer()
                 
                 Text("Quiz Setup")
                     .font(.title2)
@@ -118,6 +119,8 @@ struct QuizSetupView: View {
             urlCall += "&type=\(typeID)"
         }
         
+        urlCall += "&encode=base64"
+        
         print(urlCall)
         
         fetchQuiz(from: urlCall)
@@ -153,15 +156,17 @@ struct QuizSetupView: View {
                 let decodedResponse = try JSONDecoder().decode(QuizResponse.self, from: data)
                 let questions = decodedResponse.results.map { result in
                     QuestionModel(
-                        question: result.question,
-                        correctAnswer: result.correct_answer,
-                        incorrectAnswers: result.incorrect_answers,
-                        allAnswers: Set([result.correct_answer] + result.incorrect_answers)
+                        question: decodeBase64(result.question),
+                        correctAnswer: decodeBase64(result.correct_answer),
+                        incorrectAnswers: result.incorrect_answers.map { decodeBase64($0) },
+                        allAnswers: Set([decodeBase64(result.correct_answer)] + result.incorrect_answers.map { decodeBase64($0) })
                     )
                 }
                 
+                
                 // Use the questions array
                 print(questions)
+                router.navigateTo(.normal, with: .move(edge: .leading), questions: questions)
                 
             } catch {
                 DispatchQueue.main.async {
@@ -172,6 +177,14 @@ struct QuizSetupView: View {
             
         }.resume()
     }
+    
+    private func decodeBase64(_ string: String) -> String {
+            guard let data = Data(base64Encoded: string),
+                  let decodedString = String(data: data, encoding: .utf8) else {
+                return "Invalid base64"
+            }
+            return decodedString
+        }
 }
 
 struct SetupView_Previews: PreviewProvider {
