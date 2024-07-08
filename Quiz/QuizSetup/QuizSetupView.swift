@@ -159,14 +159,12 @@ struct QuizSetupView: View {
                         question: decodeBase64(result.question),
                         correctAnswer: decodeBase64(result.correct_answer),
                         incorrectAnswers: result.incorrect_answers.map { decodeBase64($0) },
-                        allAnswers: Set([decodeBase64(result.correct_answer)] + result.incorrect_answers.map { decodeBase64($0) })
+                        allAnswers: Set([decodeBase64(result.correct_answer)] +  result.incorrect_answers.map { decodeBase64($0) }),
+                        category: decodeBase64(result.category)
                     )
                 }
                 
-                
-                // Use the questions array
-                print(questions)
-                router.navigateWithQuestionsTo(.normal, with: .move(edge: .leading), questions: questions)
+                router.navigateWithQuestionsTo(.normal, with: .move(edge: .leading), questions: questions, category: selectedCategory.rawValue, difficulty: selectedDifficulty.rawValue)
                 
             } catch {
                 DispatchQueue.main.async {

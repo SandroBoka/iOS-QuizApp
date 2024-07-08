@@ -12,12 +12,16 @@ class Router: ObservableObject {
     @Published var currentView: ViewType = .home
     @Published var transition: AnyTransition = .identity
     @Published var data: [QuestionModel] = []
+    @Published var category: String = "Random"
+    @Published var difficulty: String = "Any"
+    @Published var endData: EndModel = EndModel(numAnswered: 0, numCorrectAnswererd: 0, category: "", difficulty: "")
     
     enum ViewType {
         case home
         case setup
         case stats
         case normal
+        case end
     }
     
     func navigateTo(_ view: ViewType, with transition: AnyTransition = .slide) {
@@ -29,9 +33,11 @@ class Router: ObservableObject {
         }
     }
     
-    func navigateWithQuestionsTo(_ view: ViewType, with transition: AnyTransition = .slide, questions data: [QuestionModel]) {
+    func navigateWithQuestionsTo(_ view: ViewType, with transition: AnyTransition = .slide, questions: [QuestionModel], category: String, difficulty: String) {
         DispatchQueue.main.async {
-            self.data = data
+            self.data = questions
+            self.category = category
+            self.difficulty = difficulty
             withAnimation {
                 self.transition = transition
                 self.currentView = view
@@ -39,8 +45,14 @@ class Router: ObservableObject {
         }
     }
     
-    func goBack() {
-        // Implement your back navigation logic if necessary
+    func navigateToNormalEnd(_ view: ViewType, with transition: AnyTransition = .slide, endModel: EndModel) {
+        DispatchQueue.main.async {
+            self.endData = endModel
+            withAnimation {
+                self.transition = transition
+                self.currentView = view
+            }
+        }
     }
 }
 
@@ -60,9 +72,11 @@ struct RouterView: View {
             case .stats:
                 StatsView(stats: StatsModel(numAnswered: 679, numCorrect: 480, bestScore: 12, dashNum: 101, normalNum: 78))
                     .transition(router.transition)
-                
             case .normal:
-                QuestionView(questions: router.data)
+                QuestionView(questions: router.data, category: router.category, difficulty: router.difficulty)
+                    .transition(router.transition)
+            case .end:
+                EndView(quizInfo: router.endData)
                     .transition(router.transition)
             }
         }
