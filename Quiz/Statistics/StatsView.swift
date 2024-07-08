@@ -17,7 +17,7 @@ struct StatsView: View {
         VStack() {
             HStack {
                 Button {
-                    router.navigateTo(.home, questions: [])
+                    router.navigateTo(.home)
                 } label: {
                     Image(systemName: "chevron.backward")
                         .renderingMode(.template)

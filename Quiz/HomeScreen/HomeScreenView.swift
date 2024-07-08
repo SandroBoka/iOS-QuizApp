@@ -32,7 +32,7 @@ struct HomescreenView: View{
                 .padding(.bottom, 10)
             
             CustomButton(text: "Create new Quiz") {
-                router.navigateTo(.setup, with: .move(edge: .leading), questions: [])
+                router.navigateTo(.setup, with: .move(edge: .leading))
             }
             .padding(.vertical, 15)
             
@@ -55,13 +55,12 @@ struct HomescreenView: View{
             }
             
             CustomButton(text: "More Stats") {
-                router.navigateTo(.stats, with: .move(edge: .leading), questions: [])
+                router.navigateTo(.stats, with: .move(edge: .leading))
             }
             .padding(.top, 15)
             
             Spacer()
         }
-        .background(Color.backgroundColor.opacity(0.3))
     }
 }
 

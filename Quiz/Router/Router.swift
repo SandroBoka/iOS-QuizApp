@@ -20,7 +20,16 @@ class Router: ObservableObject {
         case normal
     }
     
-    func navigateTo(_ view: ViewType, with transition: AnyTransition = .slide, questions data: [QuestionModel]) {
+    func navigateTo(_ view: ViewType, with transition: AnyTransition = .slide) {
+        DispatchQueue.main.async {
+            withAnimation {
+                self.transition = transition
+                self.currentView = view
+            }
+        }
+    }
+    
+    func navigateWithQuestionsTo(_ view: ViewType, with transition: AnyTransition = .slide, questions data: [QuestionModel]) {
         DispatchQueue.main.async {
             self.data = data
             withAnimation {

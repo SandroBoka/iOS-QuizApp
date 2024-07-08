@@ -24,7 +24,7 @@ struct QuizSetupView: View {
             HStack {
                 Button {
                     print("Back button pressed")
-                    router.navigateTo(.home, questions: [])
+                    router.navigateTo(.home)
                 } label: {
                     Image(systemName: "chevron.backward")
                         .renderingMode(.template)
@@ -166,7 +166,7 @@ struct QuizSetupView: View {
                 
                 // Use the questions array
                 print(questions)
-                router.navigateTo(.normal, with: .move(edge: .leading), questions: questions)
+                router.navigateWithQuestionsTo(.normal, with: .move(edge: .leading), questions: questions)
                 
             } catch {
                 DispatchQueue.main.async {
