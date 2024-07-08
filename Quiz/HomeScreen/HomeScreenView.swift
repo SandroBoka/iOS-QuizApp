@@ -14,6 +14,7 @@ extension Color {
 }
 
 struct HomescreenView: View{
+    @EnvironmentObject var router: Router
     
     @State private var percentageCorrect: Double = 85.0
     @State private var bestDash: Int = 6
@@ -32,6 +33,7 @@ struct HomescreenView: View{
             
             CustomButton(text: "Create new Quiz") {
                 print("Create new Quiz pressed.")
+                router.navigateTo(.setup, with: .slide)
             }
             .padding(.vertical, 15)
             

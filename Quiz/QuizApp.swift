@@ -9,11 +9,15 @@ import SwiftUI
 
 @main
 struct QuizApp: App {
+    
+    @StateObject private var router = Router()
+    
     let persistenceController = PersistenceController.shared
-
+    
     var body: some Scene {
         WindowGroup {
-            QuizSetupView()
+            RouterView()
+                .environmentObject(router)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }

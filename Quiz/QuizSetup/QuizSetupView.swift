@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct QuizSetupView: View {
+    @EnvironmentObject var router: Router
+    
     @State private var numberOfQuestions: Int = 10
     @State private var selectedCategory: Category = .random
     @State private var selectedDifficulty: Difficulty = .medium
@@ -21,6 +23,7 @@ struct QuizSetupView: View {
             HStack {
                 Button {
                     print("Back button pressed")
+                    router.navigateTo(.home, with: .opacity)
                 } label: {
                     Image(systemName: "chevron.backward")
                         .renderingMode(.template)
