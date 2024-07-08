@@ -32,8 +32,7 @@ struct HomescreenView: View{
                 .padding(.bottom, 10)
             
             CustomButton(text: "Create new Quiz") {
-                print("Create new Quiz pressed.")
-                router.navigateTo(.setup, with: .slide)
+                router.navigateTo(.setup, with: .move(edge: .leading))
             }
             .padding(.vertical, 15)
             
@@ -56,7 +55,7 @@ struct HomescreenView: View{
             }
             
             CustomButton(text: "More Stats") {
-                print("More Stats pressed.")
+                router.navigateTo(.stats, with: .move(edge: .leading))
             }
             .padding(.top, 15)
             

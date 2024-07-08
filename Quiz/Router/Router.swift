@@ -15,6 +15,7 @@ class Router: ObservableObject {
     enum ViewType {
         case home
         case setup
+        case stats
     }
     
     func navigateTo(_ view: ViewType, with transition: AnyTransition = .slide) {
@@ -41,6 +42,9 @@ struct RouterView: View {
                     .transition(router.transition)
             case .setup:
                 QuizSetupView()
+                    .transition(router.transition)
+            case .stats:
+                StatsView(stats: StatsModel(numAnswered: 679, numCorrect: 480, bestScore: 12, dashNum: 101, normalNum: 78))
                     .transition(router.transition)
             }
         }

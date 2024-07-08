@@ -11,11 +11,13 @@ import SwiftUI
 struct StatsView: View {
     let stats: StatsModel
     
+    @EnvironmentObject var router: Router
+    
     var body: some View {
         VStack() {
             HStack {
                 Button {
-                    print("Back button pressed")
+                    router.navigateTo(.home)
                 } label: {
                     Image(systemName: "chevron.backward")
                         .renderingMode(.template)
