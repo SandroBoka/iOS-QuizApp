@@ -7,9 +7,11 @@
 
 import Foundation
 import SwiftUI
+import RealmSwift
 
 struct StatsView: View {
-    let stats: StatsModel
+   
+    @State private var stats: StatsModelEntity?
     
     var body: some View {
         VStack() {
@@ -22,7 +24,7 @@ struct StatsView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 24, height: 24)
-                        .foregroundStyle(Color.black)
+                        .foregroundStyle(Color.white)
                 }
                 
                 Spacer()
@@ -30,6 +32,7 @@ struct StatsView: View {
                 Text("Statistics")
                     .font(.title2)
                     .fontWeight(.bold)
+                    .foregroundStyle(Color.white)
                 
                 Spacer()
             }
@@ -38,83 +41,116 @@ struct StatsView: View {
             .background(Color.headerColor)
             
             ScrollView {
-                VStack(alignment: .leading, spacing: 15) {
-                    HStack {
-                        Text("Total Questions Answered:")
-                            .font(.headline)
-                        Spacer()
-                        Text("\(stats.numAnswered)")
-                            .font(.body)
+                if let stats = stats {
+                    VStack(alignment: .leading, spacing: 15) {
+                        HStack {
+                            Text("Total Questions Answered:")
+                                .font(.headline)
+                            Spacer()
+                            Text("\(stats.numAnswered)")
+                                .font(.body)
+                        }
+                        
+                        HStack {
+                            Text("Correct Answers:")
+                                .font(.headline)
+                            Spacer()
+                            Text("\(stats.numCorrect)")
+                                .font(.body)
+                        }
+                        
+                        HStack {
+                            Text("Best Score:")
+                                .font(.headline)
+                            Spacer()
+                            Text("\(stats.bestScore)")
+                                .font(.body)
+                        }
+                        
+                        HStack {
+                            Text("Number of Dash Games:")
+                                .font(.headline)
+                            Spacer()
+                            Text("\(stats.dashNum)")
+                                .font(.body)
+                        }
+                        
+                        HStack {
+                            Text("Number of Normal Games:")
+                                .font(.headline)
+                            Spacer()
+                            Text("\(stats.normalNum)")
+                                .font(.body)
+                        }
+                    }
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(10)
+                    .padding()
+                    
+                    VStack {
+                        HStack {
+                            Spacer()
+                            CircleGraph(numAnswered: stats.numAnswered, numCorrect: stats.numCorrect)
+                                .frame(width: 280, height: 280)
+                                .padding(.top, 50)
+                            Spacer()
+                        }
+                        
+                        Text("Correct percentage")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .padding(.top, 15)
                     }
                     
-                    HStack {
-                        Text("Correct Answers:")
-                            .font(.headline)
-                        Spacer()
-                        Text("\(stats.numCorrect)")
-                            .font(.body)
+                    VStack {
+                        HStack {
+                            Spacer()
+                            GameRatioGraph(dashNum: stats.dashNum, normalNum: stats.normalNum)
+                                .frame(width: 280, height: 280)
+                                .padding(.top, 50)
+                            Spacer()
+                        }
+                        
+                        Text("Game Type Ratio")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .padding(.top, 15)
                     }
-                    
-                    HStack {
-                        Text("Best Score:")
-                            .font(.headline)
-                        Spacer()
-                        Text("\(stats.bestScore)")
-                            .font(.body)
-                    }
-                    
-                    HStack {
-                        Text("Number of Dash Games:")
-                            .font(.headline)
-                        Spacer()
-                        Text("\(stats.dashNum)")
-                            .font(.body)
-                    }
-                    
-                    HStack {
-                        Text("Number of Normal Games:")
-                            .font(.headline)
-                        Spacer()
-                        Text("\(stats.normalNum)")
-                            .font(.body)
-                    }
-                }
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(10)
-                .padding()
-                
-                VStack {
-                    HStack {
-                        Spacer()
-                        CircleGraph(numAnswered: stats.numAnswered, numCorrect: stats.numCorrect)
-                            .frame(width: 280, height: 280)
-                            .padding(.top, 50)
-                        Spacer()
-                    }
-                    
-                    Text("Correct percentage")
-                        .font(.title3)
-                        .fontWeight(.bold)
-                        .padding(.top, 15)
-                }
-                
-                VStack {
-                    HStack {
-                        Spacer()
-                        GameRatioGraph(dashNum: stats.dashNum, normalNum: stats.normalNum)
-                            .frame(width: 280, height: 280)
-                            .padding(.top, 50)
-                        Spacer()
-                    }
-                    
-                    Text("Game Type Ratio")
-                        .font(.title3)
-                        .fontWeight(.bold)
-                        .padding(.top, 15)
+                } else {
+                    Text("No stats available")
                 }
             }
             Spacer()
+        }
+        .onAppear {
+            fetchStats()
+        }
+        
+    }
+    
+    private func fetchStats() {
+        do {
+            let realm = try Realm()
+            if let statsEntity = realm.objects(StatsModelEntity.self).first {
+                stats = statsEntity
+                print("Stats fetched from Realm: \(statsEntity)")
+            } else {
+                
+                try realm.write {
+                    let newStats = StatsModelEntity()
+                    newStats.numAnswered = 100
+                    newStats.numCorrect = 80
+                    newStats.bestScore = 10
+                    newStats.dashNum = 5
+                    newStats.normalNum = 3
+                    realm.add(newStats)
+                    stats = newStats
+                    print("New stats created and added to Realm: \(newStats)")
+                }
+            }
+        } catch {
+            print("Error initializing Realm: \(error)")
         }
     }
 }
@@ -188,9 +224,6 @@ struct GameRatioGraph: View {
 
 struct StatsView_Previews: PreviewProvider {
     static var previews: some View {
-        
-        let statsModel: StatsModel = StatsModel(numAnswered: 679, numCorrect: 480, bestScore: 12, dashNum: 101, normalNum: 78)
-        
-        StatsView(stats: statsModel)
+        StatsView() 
     }
 }
