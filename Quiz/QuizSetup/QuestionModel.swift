@@ -13,6 +13,7 @@ struct QuestionModel: Identifiable {
     let correctAnswer: String
     let incorrectAnswers: [String]
     let allAnswers: Set<String>
+    let category: String
 }
 
 struct QuizResponse: Decodable {

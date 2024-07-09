@@ -11,6 +11,8 @@ import SwiftUI
 struct EndView: View {
     let quizInfo: EndModel
     
+    @EnvironmentObject var router: Router
+    
     var body: some View {
         VStack(spacing: 30) {
             
@@ -69,30 +71,37 @@ struct EndView: View {
             
             Spacer()
             
-            Button(action: buttonClicked) {
-                Text("Exit")
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity, minHeight: 50)
-                    .background(Color.buttonsColor)
-                    .cornerRadius(10)
-                    .padding(.horizontal)
+            ExitButton(text: "Exit") {
+                router.navigateTo(.home)
             }
             .padding(20)
         }
     }
 }
 
-private func buttonClicked() {
-    print("Pressed exit")
+struct ExitButton: View {
+    var text: String
+    var action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            Text(text)
+                .font(.title3)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity, minHeight: 50)
+                .background(Color.buttonsColor)
+                .cornerRadius(10)
+                .padding(.horizontal)
+        }
+    }
 }
 
 struct EndView_Previews: PreviewProvider {
     static var previews: some View {
         
-        let questions: EndModel = EndModel(numAnswered: 25, numCorrectAnswererd: 18, category: "Random", difficulty: "Medium")
+        let stats: EndModel = EndModel(numAnswered: 25, numCorrectAnswererd: 18, category: "Random", difficulty: "Medium")
         
-        EndView(quizInfo: questions)
+        EndView(quizInfo: stats)
     }
 }

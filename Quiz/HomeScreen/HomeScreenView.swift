@@ -14,6 +14,7 @@ extension Color {
 }
 
 struct HomescreenView: View{
+    @EnvironmentObject var router: Router
     
     @State private var percentageCorrect: Double = 85.0
     @State private var bestDash: Int = 6
@@ -31,12 +32,12 @@ struct HomescreenView: View{
                 .padding(.bottom, 10)
             
             CustomButton(text: "Create new Quiz") {
-                print("Create new Quiz pressed.")
+                router.navigateTo(.setup, with: .move(edge: .trailing))
             }
             .padding(.vertical, 15)
             
             CustomButton(text: "Dash Mode") {
-                print("Dash Mod pressed.")
+                router.navigateTo(.dash, with: .move(edge: .trailing))
             }
             .padding(.bottom, 20)
             
@@ -54,13 +55,12 @@ struct HomescreenView: View{
             }
             
             CustomButton(text: "More Stats") {
-                print("More Stats pressed.")
+                router.navigateTo(.stats, with: .move(edge: .trailing))
             }
             .padding(.top, 15)
             
             Spacer()
         }
-        .background(Color.backgroundColor.opacity(0.4))
     }
 }
 

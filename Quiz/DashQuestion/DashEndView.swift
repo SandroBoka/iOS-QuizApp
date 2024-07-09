@@ -11,6 +11,8 @@ import SwiftUI
 struct DashEndView: View {
     let quizInfo: DashEndModel
     
+    @EnvironmentObject var router: Router
+    
     var body: some View {
         VStack(spacing: 30) {
             
@@ -50,9 +52,9 @@ struct DashEndView: View {
                         .fontWeight(.bold)
                 }
                 HStack {
-                    Text("Time remaining:")
+                    Text("Time per question:")
                     Spacer()
-                    Text("\(quizInfo.timeRemaining) seconds")
+                    Text(String(format: "%.1f", (120.0 / Double(quizInfo.numAnswered))) + " seconds")
                         .fontWeight(.bold)
                 }
             }
@@ -63,30 +65,19 @@ struct DashEndView: View {
             
             Spacer()
             
-            Button(action: buttonClicked) {
-                Text("Exit")
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity, minHeight: 50)
-                    .background(Color.buttonsColor)
-                    .cornerRadius(10)
-                    .padding(.horizontal)
+            ExitButton(text: "Exit") {
+                router.navigateTo(.home)
             }
             .padding(20)
         }
     }
 }
 
-private func buttonClicked() {
-    print("Pressed exit")
-}
-
 struct DashEndView_Previews: PreviewProvider {
     static var previews: some View {
         
-        let questions: DashEndModel = DashEndModel(timeRemaining: 34, numAnswered: 16, numCorrectAnswererd: 9)
+        let stats: DashEndModel = DashEndModel(numAnswered: 16, numCorrectAnswererd: 9)
         
-        DashEndView(quizInfo: questions)
+        DashEndView(quizInfo: stats)
     }
 }
