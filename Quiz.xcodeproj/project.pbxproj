@@ -30,6 +30,8 @@
 		AAD839FE2C354DA800CCC55D /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD839FD2C354DA800CCC55D /* QuestionView.swift */; };
 		AADAD1712C3A996A007F1E9A /* DashEndView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADAD1702C3A996A007F1E9A /* DashEndView.swift */; };
 		AADAD1732C3A9999007F1E9A /* DashEndModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADAD1722C3A9999007F1E9A /* DashEndModel.swift */; };
+		AADF959F2C3DD52E006F2B3B /* HomeScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADF959E2C3DD52E006F2B3B /* HomeScreenViewModel.swift */; };
+		AADF95A22C3DD5BF006F2B3B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADF95A12C3DD5BF006F2B3B /* Extensions.swift */; };
 		AAE45E442C3572410094A4F6 /* QuizSetupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE45E432C3572410094A4F6 /* QuizSetupModel.swift */; };
 		AAE45E462C3572B50094A4F6 /* QuizSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE45E452C3572B50094A4F6 /* QuizSetupView.swift */; };
 		AAF45B452C39B559002762DC /* DashQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF45B442C39B559002762DC /* DashQuestionView.swift */; };
@@ -79,6 +81,8 @@
 		AAD839FD2C354DA800CCC55D /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
 		AADAD1702C3A996A007F1E9A /* DashEndView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashEndView.swift; sourceTree = "<group>"; };
 		AADAD1722C3A9999007F1E9A /* DashEndModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashEndModel.swift; sourceTree = "<group>"; };
+		AADF959E2C3DD52E006F2B3B /* HomeScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenViewModel.swift; sourceTree = "<group>"; };
+		AADF95A12C3DD5BF006F2B3B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		AAE45E432C3572410094A4F6 /* QuizSetupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizSetupModel.swift; sourceTree = "<group>"; };
 		AAE45E452C3572B50094A4F6 /* QuizSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizSetupView.swift; sourceTree = "<group>"; };
 		AAF45B442C39B559002762DC /* DashQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashQuestionView.swift; sourceTree = "<group>"; };
@@ -132,6 +136,7 @@
 		AA3358DD2C32A81B004C109F /* Quiz */ = {
 			isa = PBXGroup;
 			children = (
+				AADF95A02C3DD5AA006F2B3B /* Extensions */,
 				AA5ADE3A2C3DC996008E9831 /* DashEnd */,
 				AA5ADE372C3DC450008E9831 /* NormalEnd */,
 				AAC10DB82C3BE25D00A5C43A /* Router */,
@@ -179,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				AA33590E2C32A99E004C109F /* HomeScreenView.swift */,
+				AADF959E2C3DD52E006F2B3B /* HomeScreenViewModel.swift */,
 			);
 			path = HomeScreen;
 			sourceTree = "<group>";
@@ -236,6 +242,14 @@
 				AA5ADE352C3DB57A008E9831 /* QuestionViewModel.swift */,
 			);
 			path = Question;
+			sourceTree = "<group>";
+		};
+		AADF95A02C3DD5AA006F2B3B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				AADF95A12C3DD5BF006F2B3B /* Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		AAE45E422C3572150094A4F6 /* QuizSetup */ = {
@@ -378,6 +392,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AADF95A22C3DD5BF006F2B3B /* Extensions.swift in Sources */,
 				AA5ADE392C3DC479008E9831 /* EndViewModel.swift in Sources */,
 				AA3358E82C32A81C004C109F /* Persistence.swift in Sources */,
 				AAF45B452C39B559002762DC /* DashQuestionView.swift in Sources */,
@@ -389,6 +404,7 @@
 				AA33590F2C32A99E004C109F /* HomeScreenView.swift in Sources */,
 				AAE45E442C3572410094A4F6 /* QuizSetupModel.swift in Sources */,
 				AAAFD0A72C38654F0030CB7B /* QuestionModel.swift in Sources */,
+				AADF959F2C3DD52E006F2B3B /* HomeScreenViewModel.swift in Sources */,
 				AA5ADE362C3DB57A008E9831 /* QuestionViewModel.swift in Sources */,
 				AA985D642C3D4F4E009BD1D6 /* DashViewModel.swift in Sources */,
 				AAC10DBA2C3BE27400A5C43A /* Router.swift in Sources */,

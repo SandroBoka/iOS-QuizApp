@@ -15,7 +15,6 @@ class QuestionViewModel: ObservableObject {
     @Published var showNextButton = false
     @Published var questions: [QuestionModel] = []
     
-    private var cancellables = Set<AnyCancellable>()
     private var router: Router
     private var numCorrectAnswered = 0
     private var category: String

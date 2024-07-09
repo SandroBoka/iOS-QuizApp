@@ -77,7 +77,7 @@ struct RouterView: View {
         VStack {
             switch router.currentView {
             case .home:
-                HomescreenView()
+                HomescreenView(homescreenViewModel: HomeScreenViewModel(router: self.router))
                     .transition(router.transition)
             case .setup:
                 QuizSetupView()
