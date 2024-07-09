@@ -86,7 +86,7 @@ struct RouterView: View {
                 StatsView(stats: StatsModel(numAnswered: 679, numCorrect: 480, bestScore: 12, dashNum: 101, normalNum: 78))
                     .transition(router.transition)
             case .normal:
-                QuestionView(questions: router.data, category: router.category, difficulty: router.difficulty)
+                QuestionView(questionViewModel: QuestionViewModel(router: self.router, questions: router.data, category: router.category, difficulty: router.difficulty))
                     .transition(router.transition)
             case .dash:
                 DashQuestionView(viewModel: DashViewModel(router: self.router))

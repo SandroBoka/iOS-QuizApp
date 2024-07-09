@@ -2,23 +2,14 @@ import SwiftUI
 import Foundation
 
 struct QuestionView: View {
-    let questions: [QuestionModel]
-    let category: String
-    let difficulty: String
     
-    @EnvironmentObject var router: Router
-    
-    @State private var currentQuestionIndex = 0
-    @State private var selectedAnswer: String?
-    @State private var showNextButton = false
-    @State private var numCorrectAnswered = 0
+    @ObservedObject var questionViewModel: QuestionViewModel
     
     var body: some View {
         VStack(spacing: 20) {
-            
             HStack {
                 Button {
-                    router.navigateTo(.home)
+                    questionViewModel.goBack()
                 } label: {
                     Image(systemName: "chevron.backward")
                         .renderingMode(.template)
@@ -27,7 +18,7 @@ struct QuestionView: View {
                         .frame(width: 24, height: 24)
                         .foregroundStyle(Color.black)
                 }
-                Text("Question \(currentQuestionIndex + 1) of \(questions.count)")
+                Text("Question \(questionViewModel.currentQuestionIndex + 1) of \(questionViewModel.questions.count)")
                     .font(.title3)
                     .fontWeight(.bold)
                     .foregroundColor(.black)
@@ -42,7 +33,7 @@ struct QuestionView: View {
             }
             
             // Question text and answer buttons
-            Text(questions[currentQuestionIndex].question)
+            Text(questionViewModel.questions[questionViewModel.currentQuestionIndex].question)
                 .font(.title)
                 .padding()
             
@@ -51,27 +42,27 @@ struct QuestionView: View {
                 .background(Color.gray)
                 .padding()
             
-            ForEach(Array(questions[currentQuestionIndex].allAnswers), id: \.self) { answer in
+            ForEach(Array(questionViewModel.questions[questionViewModel.currentQuestionIndex].allAnswers), id: \.self) { answer in
                 Button(action: {
-                    selectAnswer(answer)
+                    questionViewModel.selectAnswer(answer)
                 }) {
                     Text(answer)
                         .font(.headline)
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity, minHeight: 50)
-                        .background(buttonColor(for: answer))
+                        .background(questionViewModel.buttonColor(for: answer))
                         .cornerRadius(10)
                         .padding(.horizontal)
                 }
-                .disabled(selectedAnswer != nil) // Disable buttons after selection
-                .opacity(selectedAnswer != nil && answer != selectedAnswer ? 0.5 : 1.0) // Dim other answers when one is selected
+                .disabled(questionViewModel.selectedAnswer != nil) // Disable buttons after selection
+                .opacity(questionViewModel.selectedAnswer != nil && answer != questionViewModel.selectedAnswer ? 0.5 : 1.0) // Dim other answers when one is selected
             }
             
             Spacer()
             
             // Next question button
-            if showNextButton {
-                Button(action: nextQuestion) {
+            if questionViewModel.showNextButton {
+                Button(action: questionViewModel.nextQuestion) {
                     Text("Next Question")
                         .font(.headline)
                         .foregroundColor(.white)
@@ -85,34 +76,6 @@ struct QuestionView: View {
         }
         .navigationTitle("Quiz")
         .background(Color.gray.opacity(0.2))
-    }
-    
-    private func selectAnswer(_ answer: String) {
-        selectedAnswer = answer
-        showNextButton = true
-        
-        // Increment numCorrectAnswered if the selected answer is correct
-        if answer == questions[currentQuestionIndex].correctAnswer {
-            numCorrectAnswered += 1
-        }
-    }
-    
-    private func nextQuestion() {
-        if currentQuestionIndex >= questions.count - 1 {
-            // Quiz completed logic
-            router.navigateToNormalEnd(.end, with: .move(edge: .trailing), endModel: EndModel(numAnswered: questions.count, numCorrectAnswererd: numCorrectAnswered, category: category, difficulty: difficulty))
-        } else {
-            currentQuestionIndex += 1
-            selectedAnswer = nil
-            showNextButton = false
-        }
-    }
-    
-    private func buttonColor(for answer: String) -> Color {
-        guard let selectedAnswer = selectedAnswer else { return Color.headerColor }
-        
-        let isCorrect = answer == questions[currentQuestionIndex].correctAnswer
-        return answer == selectedAnswer ? (isCorrect ? Color.green : Color.red) : Color.gray
     }
 }
 
@@ -194,6 +157,6 @@ struct QuestionView_Previews: PreviewProvider {
             )
         ]
         
-        QuestionView(questions: questions, category: "Random", difficulty: "Any")
+        QuestionView(questionViewModel: QuestionViewModel(router: Router(), questions: questions, category: "Random", difficulty: "Any"))
     }
 }
