@@ -100,7 +100,7 @@ struct QuestionView: View {
     private func nextQuestion() {
         if currentQuestionIndex >= questions.count - 1 {
             // Quiz completed logic
-            router.navigateToNormalEnd(.end, with: .move(edge: .leading), endModel: EndModel(numAnswered: questions.count, numCorrectAnswererd: numCorrectAnswered, category: category, difficulty: difficulty))
+            router.navigateToNormalEnd(.end, with: .move(edge: .trailing), endModel: EndModel(numAnswered: questions.count, numCorrectAnswererd: numCorrectAnswered, category: category, difficulty: difficulty))
         } else {
             currentQuestionIndex += 1
             selectedAnswer = nil

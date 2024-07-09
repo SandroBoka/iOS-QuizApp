@@ -23,7 +23,6 @@ struct QuizSetupView: View {
         VStack (spacing: 0){
             HStack {
                 Button {
-                    print("Back button pressed")
                     router.navigateTo(.home)
                 } label: {
                     Image(systemName: "chevron.backward")
