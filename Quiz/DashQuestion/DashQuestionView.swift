@@ -9,210 +9,94 @@ import SwiftUI
 import Foundation
 
 struct DashQuestionView: View {
-    let questions: [QuestionModel]
-    
-    @State private var currentQuestionIndex = 0
-    @State private var selectedAnswer: String?
-    @State private var score = 0
-    
-    @State private var timeRemaining = 120 // 2 minutes in seconds
-    @State private var timer: Timer? = nil
-    @State private var quizEnded = false
+    @ObservedObject var viewModel: DashViewModel
     
     var body: some View {
-        VStack(spacing: 20) {
-            
-            HStack {
-                Text("Time remaining: \(timeString(from: timeRemaining))")
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .frame(maxWidth: .infinity, minHeight: 70)
-            }
-            .background {
-                Color.headerColor
-                    .ignoresSafeArea()
-            }
-            
-            // Question text and answer buttons
-            if !quizEnded {
-                Text(questions[currentQuestionIndex].question)
-                    .font(.title)
-                    .padding()
-                
-                Divider()
-                    .frame(height: 3)
-                    .background(Color.gray)
-                    .padding()
-                
-                ForEach(Array(questions[currentQuestionIndex].allAnswers), id: \.self) { answer in
-                    Button(action: {
-                        selectAnswer(answer)
-                    }) {
-                        Text(answer)
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity, minHeight: 50)
-                            .background(buttonColor(for: answer))
-                            .cornerRadius(10)
-                            .padding(.horizontal)
+        if viewModel.questions.isEmpty{
+            Text("Loading questions...")
+                .font(.title)
+                .padding()
+        }
+        else {
+            VStack(spacing: 20) {
+                HStack {
+                    Button {
+                        viewModel.goBack()
+                    } label: {
+                        Image(systemName: "chevron.backward")
+                            .renderingMode(.template)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                            .foregroundStyle(Color.black)
                     }
-                    .disabled(selectedAnswer != nil) // Disable buttons after selection
-                    .opacity(selectedAnswer != nil && answer != selectedAnswer ? 0.5 : 1.0) // Dim other answers when one is selected
+                    Text("Time remaining: \(viewModel.timeString(from: viewModel.timeRemaining))")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .infinity, minHeight: 70)
+                    Spacer()
+                }
+                .padding(.leading, 10)
+                .background {
+                    Color.headerColor
+                        .ignoresSafeArea()
                 }
                 
-                Text("Score: \(score)")
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .padding(.vertical, 15)
-                
-                Spacer()
-            } else {
-                Spacer()
-                Text("Quiz Ended")
-                    .font(.title)
-                    .padding()
-                Spacer()
+                // Question text and answer buttons
+                if !viewModel.quizEnded {
+                        Text(viewModel.questions[viewModel.currentQuestionIndex].question)
+                            .font(.title)
+                            .padding()
+                        
+                        Divider()
+                            .frame(height: 3)
+                            .background(Color.gray)
+                            .padding()
+                        
+                        ForEach(Array(viewModel.questions[viewModel.currentQuestionIndex].allAnswers), id: \.self) { answer in
+                            Button(action: {
+                                viewModel.selectAnswer(answer)
+                            }) {
+                                Text(answer)
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity, minHeight: 50)
+                                    .background(viewModel.buttonColor(for: answer))
+                                    .cornerRadius(10)
+                                    .padding(.horizontal)
+                            }
+                            .disabled(viewModel.selectedAnswer != nil)
+                            .opacity(viewModel.selectedAnswer != nil && answer != viewModel.selectedAnswer ? 0.5 : 1.0)
+                        }
+                        
+                        Text("Score: \(viewModel.score)")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .padding(.vertical, 15)
+                        
+                        Spacer()
+                } else {
+                    Spacer()
+                    Text("Quiz Ended")
+                        .font(.title)
+                        .padding()
+                    Spacer()
+                }
+            }
+            .navigationTitle("Quiz")
+            .background(Color.gray.opacity(0.2))
+            .onAppear {
+                viewModel.startTimer()
+            }
+            .onDisappear {
+                viewModel.stopTimer()
             }
         }
-        .navigationTitle("Quiz")
-        .background(Color.gray.opacity(0.2))
-        .onAppear {
-            startTimer()
-        }
-        .onDisappear {
-            timer?.invalidate()
-        }
-    }
-    
-    private func selectAnswer(_ answer: String) {
-        selectedAnswer = answer
-        if selectedAnswer == questions[currentQuestionIndex].correctAnswer {
-            self.score += 1
-        }
-        nextQuestion()
-    }
-    
-    private func nextQuestion() {
-        // wait 1 second ant then call nextQuestion
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            currentQuestionIndex += 1
-            selectedAnswer = nil
-            
-            if currentQuestionIndex >= questions.count {
-                // Quiz completed logic can go here
-                print("Quiz completed!")
-                self.quizEnded = true
-                self.timer?.invalidate()
-            }
-        }
-        
-    }
-    
-    private func buttonColor(for answer: String) -> Color {
-        guard let selectedAnswer = selectedAnswer else { return Color.headerColor }
-        
-        let isCorrect = answer == questions[currentQuestionIndex].correctAnswer
-        if answer == selectedAnswer {
-            return isCorrect ? Color.green : Color.red
-        } else {
-            return Color.gray
-        }
-    }
-    
-    private func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            if self.timeRemaining > 0 {
-                self.timeRemaining -= 1
-            } else {
-                self.timer?.invalidate()
-                self.quizEnded = true
-            }
-        }
-    }
-    
-    private func timeString(from seconds: Int) -> String {
-        let minutes = seconds / 60
-        let seconds = seconds % 60
-        return String(format: "%02d:%02d", minutes, seconds)
     }
 }
 
 struct DashQuestionView_Previews: PreviewProvider {
     static var previews: some View {
-        
-        let questions: [Quiz.QuestionModel] = [
-            Quiz.QuestionModel(
-                question: "Who succeeded Joseph Stalin as General Secretary of the Communist Party of the Soviet Union?",
-                correctAnswer: "Nikita Khrushchev",
-                incorrectAnswers: ["Leonid Brezhnev", "Mikhail Gorbachev", "Boris Yeltsin"],
-                allAnswers: ["Nikita Khrushchev", "Boris Yeltsin", "Leonid Brezhnev", "Mikhail Gorbachev"],
-                category: "aa"
-            ),
-            Quiz.QuestionModel(
-                question: "GoldenEye 007 on the Nintendo 64 was planned to allow you to play as all previous Bond actors, with the exception of who?",
-                correctAnswer: "George Lazenby",
-                incorrectAnswers: ["Roger Moore", "Sean Connery", "Timothy Dalton"],
-                allAnswers: ["Timothy Dalton", "Sean Connery", "George Lazenby", "Roger Moore"],
-                category: "aa"
-            ),
-            Quiz.QuestionModel(
-                question: "How many countries border Kyrgyzstan?",
-                correctAnswer: "4",
-                incorrectAnswers: ["3", "1", "6"],
-                allAnswers: ["6", "4", "3", "1"],
-                category: "aa"
-            ),
-            Quiz.QuestionModel(
-                question: "What is the name of the protagonist of J.D. Salinger's novel Catcher in the Rye?",
-                correctAnswer: "Holden Caulfield",
-                incorrectAnswers: ["Fletcher Christian", "Jay Gatsby", "Randall Flagg"],
-                allAnswers: ["Jay Gatsby", "Holden Caulfield", "Randall Flagg", "Fletcher Christian"],
-                category: "aa"
-            ),
-            Quiz.QuestionModel(
-                question: "What is the most populous Muslim-majority nation in 2010?",
-                correctAnswer: "Indonesia",
-                incorrectAnswers: ["Saudi Arabia", "Iran", "Sudan"],
-                allAnswers: ["Indonesia", "Sudan", "Saudi Arabia", "Iran"],
-                category: "aa"
-            ),
-            Quiz.QuestionModel(
-                question: "After how many years would you celebrate your crystal anniversary?",
-                correctAnswer: "15",
-                incorrectAnswers: ["20", "10", "25"],
-                allAnswers: ["15", "20", "10", "25"],
-                category: "aa"
-            ),
-            Quiz.QuestionModel(
-                question: "What is the scientific term for 'taste'?",
-                correctAnswer: "Gustatory Perception",
-                incorrectAnswers: ["Olfaction", "Somatosensation", "Auditory Perception"],
-                allAnswers: ["Auditory Perception", "Olfaction", "Gustatory Perception", "Somatosensation"],
-                category: "aa"
-            ),
-            Quiz.QuestionModel(
-                question: "Which of these is not a world in the anime 'Buddyfight'?",
-                correctAnswer: "Ancient Dragon World",
-                incorrectAnswers: ["Dragon World", "Star Dragon World", "Darkness Dragon World"],
-                allAnswers: ["Star Dragon World", "Ancient Dragon World", "Dragon World", "Darkness Dragon World"],
-                category: "aa"
-            ),
-            Quiz.QuestionModel(
-                question: "Which album by American rapper Kanye West contained songs such as 'Love Lockdown', 'Paranoid' and 'Heartless'?",
-                correctAnswer: "808s & Heartbreak",
-                incorrectAnswers: ["Late Registration", "The Life of Pablo", "Graduation"],
-                allAnswers: ["Graduation", "808s & Heartbreak", "Late Registration", "The Life of Pablo"],
-                category: "aa"
-            ),
-            Quiz.QuestionModel(
-                question: "In association football, or soccer, a corner kick is when the game restarts after someone scores a goal.",
-                correctAnswer: "False",
-                incorrectAnswers: ["True"],
-                allAnswers: ["False", "True"],
-                category: "aa"
-            )
-        ]
-        
-        DashQuestionView(questions: questions)
+        DashQuestionView(viewModel: DashViewModel(router: Router()))
     }
 }

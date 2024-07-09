@@ -79,10 +79,6 @@ struct EndView: View {
     }
 }
 
-private func buttonClicked() {
-    
-}
-
 struct ExitButton: View {
     var text: String
     var action: () -> Void
@@ -104,8 +100,8 @@ struct ExitButton: View {
 struct EndView_Previews: PreviewProvider {
     static var previews: some View {
         
-        let questions: EndModel = EndModel(numAnswered: 25, numCorrectAnswererd: 18, category: "Random", difficulty: "Medium")
+        let stats: EndModel = EndModel(numAnswered: 25, numCorrectAnswererd: 18, category: "Random", difficulty: "Medium")
         
-        EndView(quizInfo: questions)
+        EndView(quizInfo: stats)
     }
 }

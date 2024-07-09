@@ -15,13 +15,16 @@ class Router: ObservableObject {
     @Published var category: String = "Random"
     @Published var difficulty: String = "Any"
     @Published var endData: EndModel = EndModel(numAnswered: 0, numCorrectAnswererd: 0, category: "", difficulty: "")
+    @Published var dashEndData: DashEndModel = DashEndModel(numAnswered: 0, numCorrectAnswererd: 0)
     
     enum ViewType {
         case home
         case setup
         case stats
         case normal
+        case dash
         case end
+        case dashEnd
     }
     
     func navigateTo(_ view: ViewType, with transition: AnyTransition = .slide) {
@@ -54,6 +57,16 @@ class Router: ObservableObject {
             }
         }
     }
+    
+    func navigateToDashEnd(_ view: ViewType, with transition: AnyTransition = .slide, dashEndModel: DashEndModel) {
+        DispatchQueue.main.async {
+            self.dashEndData = dashEndModel
+            withAnimation {
+                self.transition = transition
+                self.currentView = view
+            }
+        }
+    }
 }
 
 
@@ -75,8 +88,14 @@ struct RouterView: View {
             case .normal:
                 QuestionView(questions: router.data, category: router.category, difficulty: router.difficulty)
                     .transition(router.transition)
+            case .dash:
+                DashQuestionView(viewModel: DashViewModel(router: self.router))
+                    .transition(router.transition)
             case .end:
                 EndView(quizInfo: router.endData)
+                    .transition(router.transition)
+            case .dashEnd:
+                DashEndView(quizInfo: router.dashEndData)
                     .transition(router.transition)
             }
         }

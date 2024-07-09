@@ -37,7 +37,7 @@ struct HomescreenView: View{
             .padding(.vertical, 15)
             
             CustomButton(text: "Dash Mode") {
-                print("Dash Mod pressed.")
+                router.navigateTo(.dash, with: .move(edge: .trailing))
             }
             .padding(.bottom, 20)
             
