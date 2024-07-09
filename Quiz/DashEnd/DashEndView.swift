@@ -9,9 +9,8 @@ import Foundation
 import SwiftUI
 
 struct DashEndView: View {
-    let quizInfo: DashEndModel
     
-    @EnvironmentObject var router: Router
+    @ObservedObject var dashEndViewModel: DashEndViewModel
     
     var body: some View {
         VStack(spacing: 30) {
@@ -36,25 +35,25 @@ struct DashEndView: View {
                 HStack {
                     Text("Number of questions answered:")
                     Spacer()
-                    Text("\(quizInfo.numAnswered)")
+                    Text("\(dashEndViewModel.gameStats.numAnswered)")
                         .fontWeight(.bold)
                 }
                 HStack {
                     Text("Number of correct answers:")
                     Spacer()
-                    Text("\(quizInfo.numCorrectAnswererd)")
+                    Text("\(dashEndViewModel.gameStats.numCorrectAnswererd)")
                         .fontWeight(.bold)
                 }
                 HStack {
                     Text("Percentage of correct answers:")
                     Spacer()
-                    Text(String(format: "%.1f", (Double(quizInfo.numCorrectAnswererd) / Double(quizInfo.numAnswered) * 100)) + "%")
+                    Text(String(format: "%.1f", (Double(dashEndViewModel.gameStats.numCorrectAnswererd) / Double(dashEndViewModel.gameStats.numAnswered) * 100)) + "%")
                         .fontWeight(.bold)
                 }
                 HStack {
                     Text("Time per question:")
                     Spacer()
-                    Text(String(format: "%.1f", (120.0 / Double(quizInfo.numAnswered))) + " seconds")
+                    Text(String(format: "%.1f", (120.0 / Double(dashEndViewModel.gameStats.numAnswered))) + " seconds")
                         .fontWeight(.bold)
                 }
             }
@@ -66,7 +65,7 @@ struct DashEndView: View {
             Spacer()
             
             ExitButton(text: "Exit") {
-                router.navigateTo(.home)
+                dashEndViewModel.goToHome()
             }
             .padding(20)
         }
@@ -78,6 +77,6 @@ struct DashEndView_Previews: PreviewProvider {
         
         let stats: DashEndModel = DashEndModel(numAnswered: 16, numCorrectAnswererd: 9)
         
-        DashEndView(quizInfo: stats)
+        DashEndView(dashEndViewModel: DashEndViewModel(router: Router(), gameStats: stats))
     }
 }
