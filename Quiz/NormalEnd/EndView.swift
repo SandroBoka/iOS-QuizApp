@@ -9,9 +9,8 @@ import Foundation
 import SwiftUI
 
 struct EndView: View {
-    let quizInfo: EndModel
     
-    @EnvironmentObject var router: Router
+    @ObservedObject var endViewModel: EndViewModel
     
     var body: some View {
         VStack(spacing: 30) {
@@ -36,31 +35,31 @@ struct EndView: View {
                 HStack {
                     Text("Number of questions answered:")
                     Spacer()
-                    Text("\(quizInfo.numAnswered)")
+                    Text("\(endViewModel.gameStats.numAnswered)")
                         .fontWeight(.bold)
                 }
                 HStack {
                     Text("Number of correct answers:")
                     Spacer()
-                    Text("\(quizInfo.numCorrectAnswererd)")
+                    Text("\(endViewModel.gameStats.numCorrectAnswererd)")
                         .fontWeight(.bold)
                 }
                 HStack {
                     Text("Percentage of correct answers:")
                     Spacer()
-                    Text(String(format: "%.1f", (Double(quizInfo.numCorrectAnswererd) / Double(quizInfo.numAnswered) * 100)) + "%")
+                    Text(String(format: "%.1f", (Double(endViewModel.gameStats.numCorrectAnswererd) / Double(endViewModel.gameStats.numAnswered) * 100)) + "%")
                         .fontWeight(.bold)
                 }
                 HStack {
                     Text("Category:")
                     Spacer()
-                    Text("\(quizInfo.category) ")
+                    Text("\(endViewModel.gameStats.category) ")
                         .fontWeight(.bold)
                 }
                 HStack {
                     Text("Difficulty:")
                     Spacer()
-                    Text("\(quizInfo.difficulty) ")
+                    Text("\(endViewModel.gameStats.difficulty) ")
                         .fontWeight(.bold)
                 }
             }
@@ -72,7 +71,7 @@ struct EndView: View {
             Spacer()
             
             ExitButton(text: "Exit") {
-                router.navigateTo(.home)
+                endViewModel.goToHome()
             }
             .padding(20)
         }
@@ -102,6 +101,6 @@ struct EndView_Previews: PreviewProvider {
         
         let stats: EndModel = EndModel(numAnswered: 25, numCorrectAnswererd: 18, category: "Random", difficulty: "Medium")
         
-        EndView(quizInfo: stats)
+        EndView(endViewModel: EndViewModel(router: Router(), gameStats: stats))
     }
 }
