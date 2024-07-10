@@ -24,3 +24,6 @@ BR8 - Navigation
 
 BR9 - ViewModels 
 	Dodani ViewModeli za sve poglede osim statistike te u njima je sad sva logika dok Viewovi samo prikazuju podatke
+
+BR10 - StatsViewModel
+	Dodan StatsViewModel i u njega prebacena sva logika, na kraju normlanog kviza se sad dodaje u dataBase
