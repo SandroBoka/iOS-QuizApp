@@ -27,3 +27,6 @@ BR9 - ViewModels
 
 BR10 - StatsViewModel
 	Dodan StatsViewModel i u njega prebacena sva logika, na kraju normlanog kviza se sad dodaje u dataBase
+
+BR11 - DataBaseConnecting
+	StasView I HomescreenView sad pokazuju informacije iz baze podataka, a EndViewModel i DashEndViewModel spremaju u bazu podataka
