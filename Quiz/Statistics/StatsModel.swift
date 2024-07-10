@@ -5,13 +5,12 @@
 //  Created by Sandro Boka on 07.07.2024..
 //
 
-//import Foundation
-//
-//struct StatsModel {
-//    let numAnswered: Int
-//    let numCorrect: Int
-//    let bestScore: Int
-//    let dashNum: Int
-//    let normalNum: Int
-//}
-//msms da sd ovo netreba kad je isto u database
+import Foundation
+
+struct StatsModel {
+    let numAnswered: Int
+    let numCorrect: Int
+    let bestScore: Int
+    let dashNum: Int
+    let normalNum: Int
+}
