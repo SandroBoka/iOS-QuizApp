@@ -146,7 +146,7 @@ struct CircleGraph: View {
                     .animation(.easeOut, value: numCorrect)
                 
                 VStack {
-                    Text(String(format: "%.0f%%", correctPercentage * 100))
+                    Text(String(format: "%.1f%%", correctPercentage * 100))
                         .font(.largeTitle)
                         .bold()
                     Text("\(numCorrect) / \(numAnswered)")
@@ -191,7 +191,7 @@ struct GameRatioGraph: View {
                     .animation(.easeOut, value: dashNum)
                 
                 VStack {
-                    Text(String(format: "%.0f%%", dashNum == totalGames ? 100 : dashPercentage * 100))
+                    Text(String(format: "%.1f%%", dashNum == totalGames ? 100 : dashPercentage * 100))
                         .font(.largeTitle)
                         .bold()
                     Text("\(dashNum) Dash / \(normalNum) Normal")

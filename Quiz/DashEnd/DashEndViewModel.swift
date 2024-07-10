@@ -32,6 +32,9 @@ class DashEndViewModel: ObservableObject {
                         statsEntity.numAnswered += gameStats.numAnswered
                         statsEntity.numCorrect += gameStats.numCorrectAnswererd
                         statsEntity.dashNum += 1
+                        if gameStats.numCorrectAnswererd > statsEntity.bestScore {
+                            statsEntity.bestScore = gameStats.numCorrectAnswererd
+                        }
                         
                         stats = statsEntity
                     }
