@@ -7,17 +7,8 @@
 
 import SwiftUI
 
-extension Color {
-    static let headerColor = Color(red: 64/255, green: 165/255, blue: 120/255)
-    static let backgroundColor = Color(red:255/255, green: 255/255, blue: 221/255)
-    static let buttonsColor = Color(red:21/255, green: 205/255, blue: 150/255)
-}
-
 struct HomescreenView: View{
-    @EnvironmentObject var router: Router
-    
-    @State private var percentageCorrect: Double = 85.0
-    @State private var bestDash: Int = 6
+    @ObservedObject var homescreenViewModel: HomeScreenViewModel
     
     var body: some View{
         VStack(spacing: 20) {
@@ -32,12 +23,12 @@ struct HomescreenView: View{
                 .padding(.bottom, 10)
             
             CustomButton(text: "Create new Quiz") {
-                router.navigateTo(.setup, with: .move(edge: .trailing))
+                homescreenViewModel.goToSetup()
             }
             .padding(.vertical, 15)
             
             CustomButton(text: "Dash Mode") {
-                router.navigateTo(.dash, with: .move(edge: .trailing))
+                homescreenViewModel.goToDash()
             }
             .padding(.bottom, 20)
             
@@ -48,14 +39,14 @@ struct HomescreenView: View{
                 .padding(.bottom, 15)
             
             VStack {
-                Text("Percentage of Correct Answers: \(percentageCorrect, specifier: "%.1f")%")
+                Text("Percentage of Correct Answers: \(homescreenViewModel.percentageCorrect, specifier: "%.1f")%")
                     .font(.headline)
-                Text("Best Score in Dash: \(bestDash)")
+                Text("Best Score in Dash: \(homescreenViewModel.bestDash)")
                     .font(.headline)
             }
             
             CustomButton(text: "More Stats") {
-                router.navigateTo(.stats, with: .move(edge: .trailing))
+                homescreenViewModel.goToStats()
             }
             .padding(.top, 15)
             
@@ -102,5 +93,5 @@ struct CustomButton: View {
 }
 
 #Preview {
-    HomescreenView()
+    HomescreenView(homescreenViewModel: HomeScreenViewModel(router: Router()))
 }

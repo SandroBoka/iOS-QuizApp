@@ -77,25 +77,25 @@ struct RouterView: View {
         VStack {
             switch router.currentView {
             case .home:
-                HomescreenView()
+                HomescreenView(homescreenViewModel: HomeScreenViewModel(router: self.router))
                     .transition(router.transition)
             case .setup:
-                QuizSetupView()
+                QuizSetupView(quizSetupViewModel: QuizSetupViewModel(router: self.router))
                     .transition(router.transition)
             case .stats:
                 StatsView(stats: StatsModel(numAnswered: 679, numCorrect: 480, bestScore: 12, dashNum: 101, normalNum: 78))
                     .transition(router.transition)
             case .normal:
-                QuestionView(questions: router.data, category: router.category, difficulty: router.difficulty)
+                QuestionView(questionViewModel: QuestionViewModel(router: self.router, questions: router.data, category: router.category, difficulty: router.difficulty))
                     .transition(router.transition)
             case .dash:
                 DashQuestionView(viewModel: DashViewModel(router: self.router))
                     .transition(router.transition)
             case .end:
-                EndView(quizInfo: router.endData)
+                EndView(endViewModel: EndViewModel(router: self.router, gameStats: router.endData))
                     .transition(router.transition)
             case .dashEnd:
-                DashEndView(quizInfo: router.dashEndData)
+                DashEndView(dashEndViewModel: DashEndViewModel(router: self.router, gameStats: router.dashEndData))
                     .transition(router.transition)
             }
         }
