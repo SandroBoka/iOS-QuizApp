@@ -124,6 +124,7 @@ struct StatsView: View {
             Spacer()
         }
         .onAppear {
+            //clearDatabase() //--> ovo je da se ocisti ovo sta sam ja probno pisala
             fetchStats()
         }
         
@@ -136,23 +137,25 @@ struct StatsView: View {
                 stats = statsEntity
                 print("Stats fetched from Realm: \(statsEntity)")
             } else {
-                
-                try realm.write {
-                    let newStats = StatsModelEntity()
-                    newStats.numAnswered = 100
-                    newStats.numCorrect = 80
-                    newStats.bestScore = 10
-                    newStats.dashNum = 5
-                    newStats.normalNum = 3
-                    realm.add(newStats)
-                    stats = newStats
-                    print("New stats created and added to Realm: \(newStats)")
-                }
+                print("database empty")
+//                try realm.write {
+//                    let newStats = StatsModelEntity()
+//                    newStats.numAnswered = 1
+//                    newStats.numCorrect = 1
+//                    newStats.bestScore = 11
+//                    newStats.dashNum = 1
+//                    newStats.normalNum = 1
+//                    realm.add(newStats)
+//                    stats = newStats
+//                    print("New stats created and added to Realm: \(newStats)")
+//                }
+//           ovaj komad je kd je baza prazna ond upise nove podatke al msm da bi to bit ok jer kad se upisuju drugdje podaci ce baza bit popunjena,msm da ce ovo sdbit ok
             }
         } catch {
             print("Error initializing Realm: \(error)")
         }
     }
+    
 }
 
 struct CircleGraph: View {

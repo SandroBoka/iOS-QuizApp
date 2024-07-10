@@ -14,6 +14,7 @@ struct QuizApp: SwiftUI.App {
 
     init() {
         setupRealmMigration()
+        RealmManager.shared.initializeRealm()
     }
 
     var body: some Scene {
