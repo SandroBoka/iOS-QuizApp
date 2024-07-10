@@ -18,3 +18,6 @@ BR7 - StatsView
 
 BR8 - Navigation
 	Napravljena navigacija unutar cijele aplikacije, te poboljšana funkcionalnost od DashQuiz
+
+BR9 - ViewModels 
+	Dodani ViewModeli za sve poglede osim statistike te u njima je sad sva logika dok Viewovi samo prikazuju podatke
