@@ -42,9 +42,6 @@ struct QuizApp: SwiftUI.App {
         
         Realm.Configuration.defaultConfiguration = config
         
-       
-        print("Realm file path: \(Realm.Configuration.defaultConfiguration.fileURL?.absoluteString ?? "No file URL")")
-        
         do {
             _ = try Realm()
         } catch {
@@ -52,5 +49,3 @@ struct QuizApp: SwiftUI.App {
         }
     } 
 }
-
-//tu je izmjenjeno da se moze spojit sa svim skupa

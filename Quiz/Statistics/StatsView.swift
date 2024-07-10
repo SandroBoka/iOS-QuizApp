@@ -10,23 +10,20 @@ import SwiftUI
 import RealmSwift
 
 struct StatsView: View {
-   
-    @State private var stats: StatsModelEntity?
-    
-    @EnvironmentObject var router: Router
+    @ObservedObject var statsViewModel: StatsViewModel
     
     var body: some View {
         VStack() {
             HStack {
                 Button {
-                    router.navigateTo(.home)
+                    statsViewModel.goBack()
                 } label: {
                     Image(systemName: "chevron.backward")
                         .renderingMode(.template)
                         .resizable()
                         .scaledToFit()
                         .frame(width: 24, height: 24)
-                        .foregroundStyle(Color.white)
+                        .foregroundStyle(Color.black)
                 }
                 
                 Spacer()
@@ -34,7 +31,7 @@ struct StatsView: View {
                 Text("Statistics")
                     .font(.title2)
                     .fontWeight(.bold)
-                    .foregroundStyle(Color.white)
+                    .foregroundStyle(Color.black)
                 
                 Spacer()
             }
@@ -43,13 +40,13 @@ struct StatsView: View {
             .background(Color.headerColor)
             
             ScrollView {
-                if let stats = stats {
+                if statsViewModel.didGetData {
                     VStack(alignment: .leading, spacing: 15) {
                         HStack {
                             Text("Total Questions Answered:")
                                 .font(.headline)
                             Spacer()
-                            Text("\(stats.numAnswered)")
+                            Text("\(statsViewModel.stats.numAnswered)")
                                 .font(.body)
                         }
                         
@@ -57,7 +54,7 @@ struct StatsView: View {
                             Text("Correct Answers:")
                                 .font(.headline)
                             Spacer()
-                            Text("\(stats.numCorrect)")
+                            Text("\(statsViewModel.stats.numCorrect)")
                                 .font(.body)
                         }
                         
@@ -65,7 +62,7 @@ struct StatsView: View {
                             Text("Best Score:")
                                 .font(.headline)
                             Spacer()
-                            Text("\(stats.bestScore)")
+                            Text("\(statsViewModel.stats.bestScore)")
                                 .font(.body)
                         }
                         
@@ -73,7 +70,7 @@ struct StatsView: View {
                             Text("Number of Dash Games:")
                                 .font(.headline)
                             Spacer()
-                            Text("\(stats.dashNum)")
+                            Text("\(statsViewModel.stats.dashNum)")
                                 .font(.body)
                         }
                         
@@ -81,7 +78,7 @@ struct StatsView: View {
                             Text("Number of Normal Games:")
                                 .font(.headline)
                             Spacer()
-                            Text("\(stats.normalNum)")
+                            Text("\(statsViewModel.stats.normalNum)")
                                 .font(.body)
                         }
                     }
@@ -93,7 +90,7 @@ struct StatsView: View {
                     VStack {
                         HStack {
                             Spacer()
-                            CircleGraph(numAnswered: stats.numAnswered, numCorrect: stats.numCorrect)
+                            CircleGraph(numAnswered: statsViewModel.stats.numAnswered, numCorrect: statsViewModel.stats.numCorrect)
                                 .frame(width: 280, height: 280)
                                 .padding(.top, 50)
                             Spacer()
@@ -108,7 +105,7 @@ struct StatsView: View {
                     VStack {
                         HStack {
                             Spacer()
-                            GameRatioGraph(dashNum: stats.dashNum, normalNum: stats.normalNum)
+                            GameRatioGraph(dashNum: statsViewModel.stats.dashNum, normalNum: statsViewModel.stats.normalNum)
                                 .frame(width: 280, height: 280)
                                 .padding(.top, 50)
                             Spacer()
@@ -125,39 +122,7 @@ struct StatsView: View {
             }
             Spacer()
         }
-        .onAppear {
-            //clearDatabase() //--> ovo je da se ocisti ovo sta sam ja probno pisala
-            fetchStats()
-        }
-        
     }
-    
-    private func fetchStats() {
-        do {
-            let realm = try Realm()
-            if let statsEntity = realm.objects(StatsModelEntity.self).first {
-                stats = statsEntity
-                print("Stats fetched from Realm: \(statsEntity)")
-            } else {
-                print("database empty")
-//                try realm.write {
-//                    let newStats = StatsModelEntity()
-//                    newStats.numAnswered = 1
-//                    newStats.numCorrect = 1
-//                    newStats.bestScore = 11
-//                    newStats.dashNum = 1
-//                    newStats.normalNum = 1
-//                    realm.add(newStats)
-//                    stats = newStats
-//                    print("New stats created and added to Realm: \(newStats)")
-//                }
-//           ovaj komad je kd je baza prazna ond upise nove podatke al msm da bi to bit ok jer kad se upisuju drugdje podaci ce baza bit popunjena,msm da ce ovo sdbit ok
-            }
-        } catch {
-            print("Error initializing Realm: \(error)")
-        }
-    }
-    
 }
 
 struct CircleGraph: View {
@@ -168,7 +133,7 @@ struct CircleGraph: View {
         GeometryReader { geometry in
             let size = min(geometry.size.width, geometry.size.height)
             let lineWidth = size * 0.2
-            let correctPercentage = Double(numCorrect) / Double(numAnswered)
+            let correctPercentage = numAnswered > 0 ? Double(numCorrect) / Double(numAnswered) : 0.0
             
             ZStack {
                 Circle()
@@ -193,29 +158,40 @@ struct CircleGraph: View {
     }
 }
 
+
 struct GameRatioGraph: View {
     let dashNum: Int
     let normalNum: Int
+    
+    private func calculatePerchentage() -> Double {
+        if dashNum == 0 && normalNum >= 1 {
+            return 1.0
+        }
+        if dashNum >= 1 && normalNum == 0 {
+            return 1.0
+        }
+        return Double(dashNum) / Double(dashNum + normalNum)
+    }
     
     var body: some View {
         GeometryReader { geometry in
             let size = min(geometry.size.width, geometry.size.height)
             let lineWidth = size * 0.2
             let totalGames = dashNum + normalNum
-            let dashPercentage = Double(dashNum) / Double(totalGames)
+            let dashPercentage = calculatePerchentage()
             
             ZStack {
                 Circle()
                     .stroke(Color.gray.opacity(0.3), lineWidth: lineWidth)
                 
                 Circle()
-                    .trim(from: 0.0, to: CGFloat(dashPercentage))
+                    .trim(from: 0.0, to: dashNum == totalGames ? 1.0 : CGFloat(dashPercentage))
                     .stroke(Color.pink, lineWidth: lineWidth)
                     .rotationEffect(.degrees(-90))
                     .animation(.easeOut, value: dashNum)
                 
                 VStack {
-                    Text(String(format: "%.0f%%", dashPercentage * 100))
+                    Text(String(format: "%.0f%%", dashNum == totalGames ? 100 : dashPercentage * 100))
                         .font(.largeTitle)
                         .bold()
                     Text("\(dashNum) Dash / \(normalNum) Normal")
@@ -227,8 +203,9 @@ struct GameRatioGraph: View {
     }
 }
 
+
 struct StatsView_Previews: PreviewProvider {
     static var previews: some View {
-        StatsView() 
+        StatsView(statsViewModel: StatsViewModel(router: Router()))
     }
 }

@@ -83,7 +83,7 @@ struct RouterView: View {
                 QuizSetupView(quizSetupViewModel: QuizSetupViewModel(router: self.router))
                     .transition(router.transition)
             case .stats:
-                StatsView()
+                StatsView(statsViewModel: StatsViewModel(router: self.router))
                     .transition(router.transition)
 //                StatsView(stats: StatsModel(numAnswered: 679, numCorrect: 480, bestScore: 12, dashNum: 101, normalNum: 78))
 //                    .transition(router.transition)

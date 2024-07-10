@@ -15,7 +15,7 @@ struct HomescreenView: View{
             header
                 .padding(.vertical, 20)
                 .padding(.horizontal, 30)
-                .foregroundStyle(.white)
+                .foregroundStyle(.black)
                 .background {
                     Color.headerColor
                         .ignoresSafeArea()
