@@ -28,10 +28,9 @@ struct StatsView: View {
                 
                 Spacer()
                 
-                Text("Statistics")
+                Text("Statistics    ")
                     .font(.title2)
                     .fontWeight(.bold)
-                    .foregroundStyle(Color.black)
                 
                 Spacer()
             }

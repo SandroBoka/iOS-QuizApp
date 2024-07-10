@@ -26,7 +26,7 @@ struct QuizSetupView: View {
                 
                 Spacer()
                 
-                Text("Quiz Setup")
+                Text("Quiz Setup    ")
                     .font(.title2)
                     .fontWeight(.bold)
                 

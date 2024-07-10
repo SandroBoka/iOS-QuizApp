@@ -26,11 +26,11 @@ struct HomescreenView: View{
                         .resizable()
                         .scaledToFit()
                         .frame(width: 24, height: 24)
+                        .foregroundStyle(.black)
                 }
             }
                 .padding(.vertical, 20)
                 .padding(.horizontal, 30)
-                .foregroundStyle(.black)
                 .background {
                     Color.headerColor
                         .ignoresSafeArea()
