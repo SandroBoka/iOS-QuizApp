@@ -18,7 +18,7 @@ struct QuestionView: View {
                         .frame(width: 24, height: 24)
                         .foregroundStyle(Color.black)
                 }
-                Text("Question \(questionViewModel.currentQuestionIndex + 1) of \(questionViewModel.questions.count)")
+                Text("Question \(questionViewModel.currentQuestionIndex + 1) of \(questionViewModel.questions.count)     ")
                     .font(.title3)
                     .fontWeight(.bold)
                     .foregroundColor(.black)

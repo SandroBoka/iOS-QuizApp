@@ -30,3 +30,6 @@ BR10 - StatsViewModel
 
 BR11 - DataBaseConnecting
 	StasView I HomescreenView sad pokazuju informacije iz baze podataka, a EndViewModel i DashEndViewModel spremaju u bazu podataka
+
+BR12 - SettingsView
+	Dodani SettingsView i SettingsViewModel, njihove opcije i navigacija 

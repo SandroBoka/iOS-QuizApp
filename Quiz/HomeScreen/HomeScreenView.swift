@@ -12,10 +12,25 @@ struct HomescreenView: View{
     
     var body: some View{
         VStack(spacing: 20) {
-            header
+            HStack(spacing: 24) {
+                Text("Home")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Button {
+                    homescreenViewModel.goToSettings()
+                } label: {
+                    Image(systemName: "gearshape")
+                        .renderingMode(.template)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 24, height: 24)
+                        .foregroundStyle(.black)
+                }
+            }
                 .padding(.vertical, 20)
                 .padding(.horizontal, 30)
-                .foregroundStyle(.black)
                 .background {
                     Color.headerColor
                         .ignoresSafeArea()
@@ -51,25 +66,6 @@ struct HomescreenView: View{
             .padding(.top, 15)
             
             Spacer()
-        }
-    }
-}
-
-private var header: some View{
-    HStack(spacing: 24) {
-        Text("Home")
-            .font(.title2)
-            .fontWeight(.semibold)
-            .frame(maxWidth: .infinity, alignment: .leading)
-        
-        Button {
-            print("Settings button pressed")
-        } label: {
-            Image(systemName: "gearshape")
-                .renderingMode(.template)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 24, height: 24)
         }
     }
 }
