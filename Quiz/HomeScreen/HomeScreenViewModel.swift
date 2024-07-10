@@ -32,6 +32,10 @@ class HomeScreenViewModel: ObservableObject {
         router.navigateTo(.stats, with: .move(edge: .trailing))
     }
     
+    func goToSettings() {
+        router.navigateTo(.settings, with: .move(edge: .trailing))
+    }
+    
     func readFromDatabase() {
         do {
             let realm = try Realm()

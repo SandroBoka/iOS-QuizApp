@@ -25,6 +25,7 @@ class Router: ObservableObject {
         case dash
         case end
         case dashEnd
+        case settings
     }
     
     func navigateTo(_ view: ViewType, with transition: AnyTransition = .slide) {
@@ -99,6 +100,8 @@ struct RouterView: View {
             case .dashEnd:
                 DashEndView(dashEndViewModel: DashEndViewModel(router: self.router, gameStats: router.dashEndData))
                     .transition(router.transition)
+            case .settings:
+                SettingsView(settingsViewModel: SettingsViewModel(router: self.router))
             }
         }
     }
