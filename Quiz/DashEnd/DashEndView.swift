@@ -1,5 +1,5 @@
 //
-//  EndView.swift
+//  DashEndView.swift
 //  Quiz
 //
 //  Created by Sandro Boka on 07.07.2024..
@@ -8,14 +8,15 @@
 import Foundation
 import SwiftUI
 
-struct EndView: View {
-    let quizInfo: EndModel
+struct DashEndView: View {
+    
+    @ObservedObject var dashEndViewModel: DashEndViewModel
     
     var body: some View {
         VStack(spacing: 30) {
             
             HStack {
-                Text("Quiz ended")
+                Text("Dash Quiz ended")
                     .font(.title)
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, minHeight: 70)
@@ -34,31 +35,25 @@ struct EndView: View {
                 HStack {
                     Text("Number of questions answered:")
                     Spacer()
-                    Text("\(quizInfo.numAnswered)")
+                    Text("\(dashEndViewModel.gameStats.numAnswered)")
                         .fontWeight(.bold)
                 }
                 HStack {
                     Text("Number of correct answers:")
                     Spacer()
-                    Text("\(quizInfo.numCorrectAnswererd)")
+                    Text("\(dashEndViewModel.gameStats.numCorrectAnswererd)")
                         .fontWeight(.bold)
                 }
                 HStack {
                     Text("Percentage of correct answers:")
                     Spacer()
-                    Text(String(format: "%.1f", (Double(quizInfo.numCorrectAnswererd) / Double(quizInfo.numAnswered) * 100)) + "%")
+                    Text(String(format: "%.1f", (Double(dashEndViewModel.gameStats.numCorrectAnswererd) / Double(dashEndViewModel.gameStats.numAnswered) * 100)) + "%")
                         .fontWeight(.bold)
                 }
                 HStack {
-                    Text("Category:")
+                    Text("Time per question:")
                     Spacer()
-                    Text("\(quizInfo.category) ")
-                        .fontWeight(.bold)
-                }
-                HStack {
-                    Text("Difficulty:")
-                    Spacer()
-                    Text("\(quizInfo.difficulty) ")
+                    Text(String(format: "%.1f", (120.0 / Double(dashEndViewModel.gameStats.numAnswered))) + " seconds")
                         .fontWeight(.bold)
                 }
             }
@@ -69,30 +64,19 @@ struct EndView: View {
             
             Spacer()
             
-            Button(action: buttonClicked) {
-                Text("Exit")
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity, minHeight: 50)
-                    .background(Color.buttonsColor)
-                    .cornerRadius(10)
-                    .padding(.horizontal)
+            ExitButton(text: "Exit") {
+                dashEndViewModel.goToHome()
             }
             .padding(20)
         }
     }
 }
 
-private func buttonClicked() {
-    print("Pressed exit")
-}
-
-struct EndView_Previews: PreviewProvider {
+struct DashEndView_Previews: PreviewProvider {
     static var previews: some View {
         
-        let questions: EndModel = EndModel(numAnswered: 25, numCorrectAnswererd: 18, category: "Random", difficulty: "Medium")
+        let stats: DashEndModel = DashEndModel(numAnswered: 16, numCorrectAnswererd: 9)
         
-        EndView(quizInfo: questions)
+        DashEndView(dashEndViewModel: DashEndViewModel(router: Router(), gameStats: stats))
     }
 }

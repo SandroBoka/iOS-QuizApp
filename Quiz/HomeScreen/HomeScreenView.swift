@@ -19,9 +19,7 @@ extension Color {
 }
 
 struct HomescreenView: View{
-    
-    @State private var percentageCorrect: Double = 85.0
-    @State private var bestDash: Int = 6
+    @ObservedObject var homescreenViewModel: HomeScreenViewModel
     
     var body: some View{
         VStack(spacing: 20) {
@@ -36,12 +34,12 @@ struct HomescreenView: View{
                 .padding(.bottom, 10)
             
             CustomButton(text: "Create new Quiz") {
-                print("Create new Quiz pressed.")
+                homescreenViewModel.goToSetup()
             }
             .padding(.vertical, 15)
             
             CustomButton(text: "Dash Mode") {
-                print("Dash Mod pressed.")
+                homescreenViewModel.goToDash()
             }
             .padding(.bottom, 20)
             
@@ -52,20 +50,19 @@ struct HomescreenView: View{
                 .padding(.bottom, 15)
             
             VStack {
-                Text("Percentage of Correct Answers: \(percentageCorrect, specifier: "%.1f")%")
+                Text("Percentage of Correct Answers: \(homescreenViewModel.percentageCorrect, specifier: "%.1f")%")
                     .font(.headline)
-                Text("Best Score in Dash: \(bestDash)")
+                Text("Best Score in Dash: \(homescreenViewModel.bestDash)")
                     .font(.headline)
             }
             
             CustomButton(text: "More Stats") {
-                print("More Stats pressed.")
+                homescreenViewModel.goToStats()
             }
             .padding(.top, 15)
             
             Spacer()
         }
-        .background(Color.backgroundColor.opacity(0.4))
     }
 }
 
@@ -107,5 +104,5 @@ struct CustomButton: View {
 }
 
 #Preview {
-    HomescreenView()
+    HomescreenView(homescreenViewModel: HomeScreenViewModel(router: Router()))
 }

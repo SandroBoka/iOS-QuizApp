@@ -10,16 +10,18 @@ import RealmSwift
 
 @main
 struct QuizApp: SwiftUI.App {
+    @StateObject private var router = Router()
     let persistenceController = PersistenceController.shared
 
     init() {
         setupRealmMigration()
         RealmManager.shared.initializeRealm()
     }
-
+    
     var body: some Scene {
         WindowGroup {
-            QuizSetupView()
+            RouterView()
+                .environmentObject(router)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
