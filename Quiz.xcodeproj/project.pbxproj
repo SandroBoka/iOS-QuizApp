@@ -36,6 +36,8 @@
 		AAE45E442C3572410094A4F6 /* QuizSetupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE45E432C3572410094A4F6 /* QuizSetupModel.swift */; };
 		AAE45E462C3572B50094A4F6 /* QuizSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE45E452C3572B50094A4F6 /* QuizSetupView.swift */; };
 		AAF45B452C39B559002762DC /* DashQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF45B442C39B559002762DC /* DashQuestionView.swift */; };
+		D7F0EA6F2C3D6D1D0043B916 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D7F0EA6E2C3D6D1D0043B916 /* RealmSwift */; };
+		D7F0EA722C3D6D5B0043B916 /* DBRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F0EA712C3D6D5B0043B916 /* DBRealm.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +90,7 @@
 		AAE45E432C3572410094A4F6 /* QuizSetupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizSetupModel.swift; sourceTree = "<group>"; };
 		AAE45E452C3572B50094A4F6 /* QuizSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizSetupView.swift; sourceTree = "<group>"; };
 		AAF45B442C39B559002762DC /* DashQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashQuestionView.swift; sourceTree = "<group>"; };
+		D7F0EA712C3D6D5B0043B916 /* DBRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBRealm.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +98,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7F0EA6F2C3D6D1D0043B916 /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,6 +142,7 @@
 		AA3358DD2C32A81B004C109F /* Quiz */ = {
 			isa = PBXGroup;
 			children = (
+				D7F0EA702C3D6D390043B916 /* Database */,
 				AADF95A02C3DD5AA006F2B3B /* Extensions */,
 				AA5ADE3A2C3DC996008E9831 /* DashEnd */,
 				AA5ADE372C3DC450008E9831 /* NormalEnd */,
@@ -265,6 +270,14 @@
 			path = QuizSetup;
 			sourceTree = "<group>";
 		};
+		D7F0EA702C3D6D390043B916 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				D7F0EA712C3D6D5B0043B916 /* DBRealm.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -281,6 +294,9 @@
 			dependencies = (
 			);
 			name = Quiz;
+			packageProductDependencies = (
+				D7F0EA6E2C3D6D1D0043B916 /* RealmSwift */,
+			);
 			productName = Quiz;
 			productReference = AA3358DB2C32A81B004C109F /* Quiz.app */;
 			productType = "com.apple.product-type.application";
@@ -353,6 +369,9 @@
 				Base,
 			);
 			mainGroup = AA3358D22C32A81B004C109F;
+			packageReferences = (
+				D7F0EA6D2C3D6D1D0043B916 /* XCRemoteSwiftPackageReference "realm-swift" */,
+			);
 			productRefGroup = AA3358DC2C32A81B004C109F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -404,6 +423,7 @@
 				AAE45E462C3572B50094A4F6 /* QuizSetupView.swift in Sources */,
 				AADAD1732C3A9999007F1E9A /* DashEndModel.swift in Sources */,
 				AA161D352C3AC42E00C2FB28 /* EndModel.swift in Sources */,
+				D7F0EA722C3D6D5B0043B916 /* DBRealm.swift in Sources */,
 				AA33590F2C32A99E004C109F /* HomeScreenView.swift in Sources */,
 				AAE45E442C3572410094A4F6 /* QuizSetupModel.swift in Sources */,
 				AAAFD0A72C38654F0030CB7B /* QuestionModel.swift in Sources */,
@@ -742,6 +762,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D7F0EA6D2C3D6D1D0043B916 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D7F0EA6E2C3D6D1D0043B916 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D7F0EA6D2C3D6D1D0043B916 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		AA3358E92C32A81C004C109F /* Quiz.xcdatamodeld */ = {
