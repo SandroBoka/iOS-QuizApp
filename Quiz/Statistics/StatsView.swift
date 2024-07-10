@@ -10,16 +10,13 @@ import SwiftUI
 import RealmSwift
 
 struct StatsView: View {
-   
-    @State private var stats: StatsModelEntity?
-    
-    @EnvironmentObject var router: Router
+    @ObservedObject var statsViewModel: StatsViewModel
     
     var body: some View {
         VStack() {
             HStack {
                 Button {
-                    router.navigateTo(.home)
+                    statsViewModel.goBack()
                 } label: {
                     Image(systemName: "chevron.backward")
                         .renderingMode(.template)
@@ -43,13 +40,13 @@ struct StatsView: View {
             .background(Color.headerColor)
             
             ScrollView {
-                if let stats = stats {
+                if statsViewModel.didGetData {
                     VStack(alignment: .leading, spacing: 15) {
                         HStack {
                             Text("Total Questions Answered:")
                                 .font(.headline)
                             Spacer()
-                            Text("\(stats.numAnswered)")
+                            Text("\(statsViewModel.stats.numAnswered)")
                                 .font(.body)
                         }
                         
@@ -57,7 +54,7 @@ struct StatsView: View {
                             Text("Correct Answers:")
                                 .font(.headline)
                             Spacer()
-                            Text("\(stats.numCorrect)")
+                            Text("\(statsViewModel.stats.numCorrect)")
                                 .font(.body)
                         }
                         
@@ -65,7 +62,7 @@ struct StatsView: View {
                             Text("Best Score:")
                                 .font(.headline)
                             Spacer()
-                            Text("\(stats.bestScore)")
+                            Text("\(statsViewModel.stats.bestScore)")
                                 .font(.body)
                         }
                         
@@ -73,7 +70,7 @@ struct StatsView: View {
                             Text("Number of Dash Games:")
                                 .font(.headline)
                             Spacer()
-                            Text("\(stats.dashNum)")
+                            Text("\(statsViewModel.stats.dashNum)")
                                 .font(.body)
                         }
                         
@@ -81,7 +78,7 @@ struct StatsView: View {
                             Text("Number of Normal Games:")
                                 .font(.headline)
                             Spacer()
-                            Text("\(stats.normalNum)")
+                            Text("\(statsViewModel.stats.normalNum)")
                                 .font(.body)
                         }
                     }
@@ -93,7 +90,7 @@ struct StatsView: View {
                     VStack {
                         HStack {
                             Spacer()
-                            CircleGraph(numAnswered: stats.numAnswered, numCorrect: stats.numCorrect)
+                            CircleGraph(numAnswered: statsViewModel.stats.numAnswered, numCorrect: statsViewModel.stats.numCorrect)
                                 .frame(width: 280, height: 280)
                                 .padding(.top, 50)
                             Spacer()
@@ -108,7 +105,7 @@ struct StatsView: View {
                     VStack {
                         HStack {
                             Spacer()
-                            GameRatioGraph(dashNum: stats.dashNum, normalNum: stats.normalNum)
+                            GameRatioGraph(dashNum: statsViewModel.stats.dashNum, normalNum: statsViewModel.stats.normalNum)
                                 .frame(width: 280, height: 280)
                                 .padding(.top, 50)
                             Spacer()
@@ -125,46 +122,7 @@ struct StatsView: View {
             }
             Spacer()
         }
-        .onAppear {
-//            clearDatabase()
-            fetchStats()
-        }
-        
     }
-    
-    private func fetchStats() {
-        do {
-            let realm = try Realm()
-            if let statsEntity = realm.objects(StatsModelEntity.self).first {
-                stats = statsEntity
-            } else {
-                print("database empty")
-            }
-        } catch {
-            print("Error initializing Realm: \(error)")
-        }
-    }
-    
-    private func clearDatabase() {
-            do {
-                let realm = try Realm()
-                if let statsEntity = realm.objects(StatsModelEntity.self).first {
-                    try realm.write {
-                        statsEntity.numAnswered = 0
-                        statsEntity.numCorrect = 0
-                        statsEntity.bestScore = 0
-                        statsEntity.dashNum = 0
-                        statsEntity.normalNum = 0
-                        stats = statsEntity
-                    }
-                } else {
-                    print("No stats found to clear")
-                }
-            } catch {
-                print("Error clearing database in Realm: \(error)")
-            }
-        }
-    
 }
 
 struct CircleGraph: View {
@@ -248,6 +206,6 @@ struct GameRatioGraph: View {
 
 struct StatsView_Previews: PreviewProvider {
     static var previews: some View {
-        StatsView() 
+        StatsView(statsViewModel: StatsViewModel(router: Router()))
     }
 }
