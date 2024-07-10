@@ -37,16 +37,34 @@ struct SettingsView: View {
             .padding(.vertical, 20)
             .background(Color.headerColor)
             
-            Toggle(isOn: $settingsViewModel.isDarkMode) {
-                            Text("Dark Mode")
-                                .font(.title3)
+            Form {
+                Section(header: Text("Appearance")) {
+                    Toggle(isOn: $settingsViewModel.isDarkMode) {
+                        Text("Dark Mode")
+                            .font(.title3)
+                    }
+                }
+                
+                Section(header: Text("Preferences")) {
+                    Toggle(isOn: $settingsViewModel.isSoundEffectsEnabled) {
+                        Text("Sound Effects")
+                            .font(.title3)
+                      }
+                }
+                
+                Section(header: Text("Language")) {
+                    Picker(selection: $settingsViewModel.selectedLanguage, label: Text("Language").font(.title3)) {
+                        ForEach(settingsViewModel.availableLanguages, id: \.self) { language in
+                            Text(language).tag(language)
                         }
-                        .padding(30)
+                    }
+                }
+            }
+            .onChange(of: settingsViewModel.isDarkMode) { oldValue, newValue in
+                settingsViewModel.changeColors()
+            }
             
             Spacer()
-        }
-        .onChange(of: settingsViewModel.isDarkMode) { oldValue, newValue in
-            settingsViewModel.changeColors()
         }
     }
 }

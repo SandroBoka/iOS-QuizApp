@@ -15,6 +15,9 @@ class SettingsViewModel: ObservableObject {
                 UserDefaults.standard.set(isDarkMode, forKey: "isDarkMode")
             }
         }
+    @Published var isSoundEffectsEnabled: Bool = false
+    @Published var selectedLanguage: String = "English"
+    @Published var availableLanguages: [String] = ["English", "Croatian", "German"]
     private var router: Router
     
     init(router: Router) {
