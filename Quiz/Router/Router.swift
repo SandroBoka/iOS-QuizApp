@@ -80,7 +80,7 @@ struct RouterView: View {
                 HomescreenView(homescreenViewModel: HomeScreenViewModel(router: self.router))
                     .transition(router.transition)
             case .setup:
-                QuizSetupView()
+                QuizSetupView(quizSetupViewModel: QuizSetupViewModel(router: self.router))
                     .transition(router.transition)
             case .stats:
                 StatsView(stats: StatsModel(numAnswered: 679, numCorrect: 480, bestScore: 12, dashNum: 101, normalNum: 78))
