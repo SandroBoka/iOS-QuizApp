@@ -76,6 +76,16 @@ struct QuestionView: View {
         }
         .navigationTitle("Quiz")
         .background(Color.gray.opacity(0.2))
+        .alert(isPresented: $questionViewModel.showAlert) { // Alert for confirmation
+            Alert(
+                title: Text("Quit Quiz?"),
+                message: Text("Are you sure you want to quit the quiz?"),
+                primaryButton: .destructive(Text("Quit")) {
+                    questionViewModel.confirmGoBack()
+                },
+                secondaryButton: .cancel()
+            )
+        }
     }
 }
 

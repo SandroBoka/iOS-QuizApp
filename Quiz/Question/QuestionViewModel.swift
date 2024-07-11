@@ -14,6 +14,7 @@ class QuestionViewModel: ObservableObject {
     @Published var selectedAnswer: String?
     @Published var showNextButton = false
     @Published var questions: [QuestionModel] = []
+    @Published var showAlert = false 
     
     private var router: Router
     private var numCorrectAnswered = 0
@@ -57,7 +58,11 @@ class QuestionViewModel: ObservableObject {
     }
     
     func goBack() {
-        router.navigateTo(.home)
+        showAlert = true  // Show alert instead of navigating back
+    }
+    
+    func confirmGoBack() {
+        router.navigateTo(.home)  // Actual navigation
     }
     
     func goToEnd() {

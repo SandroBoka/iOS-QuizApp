@@ -92,7 +92,7 @@ struct RouterView: View {
                 QuestionView(questionViewModel: QuestionViewModel(router: self.router, questions: router.data, category: router.category, difficulty: router.difficulty))
                     .transition(router.transition)
             case .dash:
-                DashQuestionView(viewModel: DashViewModel(router: self.router))
+                DashQuestionView(dashViewModel: DashViewModel(router: self.router))
                     .transition(router.transition)
             case .end:
                 EndView(endViewModel: EndViewModel(router: self.router, gameStats: router.endData))

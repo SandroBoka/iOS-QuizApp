@@ -33,3 +33,6 @@ BR11 - DataBaseConnecting
 
 BR12 - SettingsView
 	Dodani SettingsView i SettingsViewModel, njihove opcije i navigacija 
+
+BR13 - ExitAlert
+	Dodani alertovi kad se zeli izac iz kviza koji traze potvrdu korisnika, u dash modu zaustavlja to zaustavlja timer

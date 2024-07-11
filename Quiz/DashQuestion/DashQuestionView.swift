@@ -9,10 +9,10 @@ import SwiftUI
 import Foundation
 
 struct DashQuestionView: View {
-    @ObservedObject var viewModel: DashViewModel
+    @ObservedObject var dashViewModel: DashViewModel
     
     var body: some View {
-        if viewModel.questions.isEmpty{
+        if dashViewModel.questions.isEmpty{
             Text("Loading questions...")
                 .font(.title)
                 .padding()
@@ -21,7 +21,7 @@ struct DashQuestionView: View {
             VStack(spacing: 20) {
                 HStack {
                     Button {
-                        viewModel.goBack()
+                        dashViewModel.goBack()
                     } label: {
                         Image(systemName: "chevron.backward")
                             .renderingMode(.template)
@@ -30,7 +30,7 @@ struct DashQuestionView: View {
                             .frame(width: 24, height: 24)
                             .foregroundStyle(Color.black)
                     }
-                    Text("Time remaining: \(viewModel.timeString(from: viewModel.timeRemaining))")
+                    Text("Time remaining: \(dashViewModel.timeString(from: dashViewModel.timeRemaining))")
                         .font(.title3)
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity, minHeight: 70)
@@ -43,8 +43,8 @@ struct DashQuestionView: View {
                 }
                 
                 // Question text and answer buttons
-                if !viewModel.quizEnded {
-                        Text(viewModel.questions[viewModel.currentQuestionIndex].question)
+                if !dashViewModel.quizEnded {
+                        Text(dashViewModel.questions[dashViewModel.currentQuestionIndex].question)
                             .font(.title)
                             .padding()
                         
@@ -53,23 +53,23 @@ struct DashQuestionView: View {
                             .background(Color.gray)
                             .padding()
                         
-                        ForEach(Array(viewModel.questions[viewModel.currentQuestionIndex].allAnswers), id: \.self) { answer in
+                        ForEach(Array(dashViewModel.questions[dashViewModel.currentQuestionIndex].allAnswers), id: \.self) { answer in
                             Button(action: {
-                                viewModel.selectAnswer(answer)
+                                dashViewModel.selectAnswer(answer)
                             }) {
                                 Text(answer)
                                     .font(.headline)
                                     .foregroundColor(.white)
                                     .frame(maxWidth: .infinity, minHeight: 50)
-                                    .background(viewModel.buttonColor(for: answer))
+                                    .background(dashViewModel.buttonColor(for: answer))
                                     .cornerRadius(10)
                                     .padding(.horizontal)
                             }
-                            .disabled(viewModel.selectedAnswer != nil)
-                            .opacity(viewModel.selectedAnswer != nil && answer != viewModel.selectedAnswer ? 0.5 : 1.0)
+                            .disabled(dashViewModel.selectedAnswer != nil)
+                            .opacity(dashViewModel.selectedAnswer != nil && answer != dashViewModel.selectedAnswer ? 0.5 : 1.0)
                         }
                         
-                        Text("Score: \(viewModel.score)")
+                        Text("Score: \(dashViewModel.score)")
                             .font(.title3)
                             .fontWeight(.bold)
                             .padding(.vertical, 15)
@@ -86,10 +86,22 @@ struct DashQuestionView: View {
             .navigationTitle("Quiz")
             .background(Color.gray.opacity(0.2))
             .onAppear {
-                viewModel.startTimer()
+                dashViewModel.startTimer()
             }
             .onDisappear {
-                viewModel.stopTimer()
+                dashViewModel.stopTimer()
+            }
+            .alert(isPresented: $dashViewModel.showAlert) { // Alert for confirmation
+                Alert(
+                    title: Text("Quit Quiz?"),
+                    message: Text("Are you sure you want to quit the quiz?"),
+                    primaryButton: .destructive(Text("Quit")) {
+                        dashViewModel.confirmGoBack()
+                    },
+                    secondaryButton: .cancel() {
+                        dashViewModel.continueQuiz()
+                    }
+                )
             }
         }
     }
@@ -97,6 +109,6 @@ struct DashQuestionView: View {
 
 struct DashQuestionView_Previews: PreviewProvider {
     static var previews: some View {
-        DashQuestionView(viewModel: DashViewModel(router: Router()))
+        DashQuestionView(dashViewModel: DashViewModel(router: Router()))
     }
 }
