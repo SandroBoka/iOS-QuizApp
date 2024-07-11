@@ -1,12 +1,7 @@
-
-
-
-
-
 import Foundation
 import RealmSwift
 
-class StatsModelEntity: Object, Identifiable { 
+class StatsModelEntity: Object, Identifiable {
     @Persisted(primaryKey: true) var id: ObjectId
     @Persisted var numAnswered: Int = 0
     @Persisted var numCorrect: Int = 0
@@ -15,18 +10,10 @@ class StatsModelEntity: Object, Identifiable {
     @Persisted var normalNum: Int = 0
 }
 
-class QuestionEntity: Object {
-    @Persisted var question: String = ""
-    @Persisted var allAnswers: List<String> = List<String>()
-    @Persisted var correctAnswer: String = ""
+class AppSettingsEntity: Object {
+    @Persisted(primaryKey: true) var id: ObjectId
+    @Persisted var isDarkMode: Bool = false
 }
-
-class QuestionTypeEntity: Object {
-    @Persisted var questionType: String = ""
-    @Persisted var allQuestions: List<QuestionEntity> = List<QuestionEntity>()
-}
-
-
 
 class RealmManager {
     
@@ -38,7 +25,6 @@ class RealmManager {
     
     func initializeRealm() {
         let hasLaunchedBefore = UserDefaults.standard.bool(forKey: "hasLaunchedBefore")
-        
         if !hasLaunchedBefore {
             // First launch, initialize Realm with default values
             do {
@@ -54,15 +40,10 @@ class RealmManager {
                     newStats.normalNum = 0
                     realm.add(newStats)
                     
-                    let newQuestions = QuestionEntity()
-                    newQuestions.question = ""
-                    newQuestions.allAnswers = List<String>()
-                    newQuestions.correctAnswer = ""
+                    let newAppSettings = AppSettingsEntity()
+                    newAppSettings.isDarkMode = false // Set default value for dark mode
+                    realm.add(newAppSettings)
                     
-                    let newQuestionType = QuestionTypeEntity()
-                    newQuestionType.questionType = ""
-                    newQuestionType.allQuestions = List<QuestionEntity>()
-                    print("Initial stats created and added to Realm: \(newStats)")
                 }
                 
                 
@@ -73,14 +54,24 @@ class RealmManager {
         }
     }
     
-    
-    
+    func fetchDarkModeSetting() -> Bool {
+            do {
+                let realm = try Realm()
+                if let appSettings = realm.objects(AppSettingsEntity.self).first {
+                    return appSettings.isDarkMode
+                }
+            } catch {
+                print("Error fetching dark mode setting from Realm: \(error)")
+            }
+            return false // default value if fetch fails
+        }
     
     func clearDatabase() {
         do {
             let realm = try Realm()
             try realm.write {
                 realm.deleteAll()
+                UserDefaults.standard.set(false, forKey: "hasLaunchedBefore")
             }
         } catch {
             print("Error clearing Realm database: \(error)")
