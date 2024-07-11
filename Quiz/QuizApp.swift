@@ -23,6 +23,9 @@ struct QuizApp: SwiftUI.App {
             RouterView()
                 .environmentObject(router)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .onAppear {
+                    applyDarkModeSetting()
+                }
         }
     }
 
@@ -47,5 +50,14 @@ struct QuizApp: SwiftUI.App {
         } catch {
             print("Error initializing Realm after migration setup: \(error)")
         }
-    } 
+    }
+    
+    private func applyDarkModeSetting() {
+            let isDarkMode = RealmManager.shared.fetchDarkModeSetting()
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                windowScene.windows.forEach { window in
+                    window.overrideUserInterfaceStyle = isDarkMode ? .dark : .light
+                }
+            }
+        }
 }

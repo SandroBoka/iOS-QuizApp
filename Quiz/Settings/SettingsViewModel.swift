@@ -7,11 +7,13 @@
 
 import Foundation
 import UIKit
+import RealmSwift
 
 class SettingsViewModel: ObservableObject {
     @Published var isDarkMode: Bool {
             didSet {
                 // Save the dark mode setting
+                saveDarkModeSetting()
                 UserDefaults.standard.set(isDarkMode, forKey: "isDarkMode")
             }
         }
@@ -37,4 +39,17 @@ class SettingsViewModel: ObservableObject {
             }
         }
     }
+    
+    private func saveDarkModeSetting() {
+            do {
+                let realm = try Realm()
+                if let appSettings = realm.objects(AppSettingsEntity.self).first {
+                    try realm.write {
+                        appSettings.isDarkMode = isDarkMode
+                    }
+                }
+            } catch {
+                print("Error updating dark mode setting in Realm: \(error)")
+            }
+        }
 }

@@ -36,3 +36,6 @@ BR12 - SettingsView
 
 BR13 - ExitAlert
 	Dodani alertovi kad se zeli izac iz kviza koji traze potvrdu korisnika, u dash modu zaustavlja to zaustavlja timer
+
+BR14 - DarkMode
+	DarkMode status se sad zapisuje u database I provjeva pri pokretanju aplikacije
