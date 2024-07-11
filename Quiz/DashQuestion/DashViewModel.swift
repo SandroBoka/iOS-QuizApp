@@ -16,6 +16,7 @@ class DashViewModel: ObservableObject {
     @Published var timeRemaining = 120
     @Published var quizEnded = false
     @Published var questions: [QuestionModel] = []
+    @Published var showAlert = false 
     
     private var timer: Timer? = nil
     private var cancellables = Set<AnyCancellable>()
@@ -81,7 +82,17 @@ class DashViewModel: ObservableObject {
     }
     
     func goBack() {
-        router.navigateTo(.home)
+        showAlert = true  // Show alert instead of navigating back
+        stopTimer()
+    }
+    
+    func continueQuiz() {
+        showAlert = false
+        startTimer()
+    }
+    
+    func confirmGoBack() {
+        router.navigateTo(.home)  // Actual navigation
     }
     
     func goToDashEnd() {

@@ -14,7 +14,7 @@ class QuestionViewModel: ObservableObject {
     @Published var selectedAnswer: String?
     @Published var showNextButton = false
     @Published var questions: [QuestionModel] = []
-    @Published var showAlert = false  // New property for alert display
+    @Published var showAlert = false 
     
     private var router: Router
     private var numCorrectAnswered = 0
